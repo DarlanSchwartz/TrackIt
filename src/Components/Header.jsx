@@ -27,7 +27,7 @@ const HeaderApp = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0 18px;
-
+    
     img {
         width: 51px;
         height: 51px;

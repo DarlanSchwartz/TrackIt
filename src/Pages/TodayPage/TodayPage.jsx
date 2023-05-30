@@ -10,6 +10,7 @@ import Habit from "./Habit";
 import LoadingBlocks from "../../Components/LoadingBlocks";
 
 
+
 export default function TodayPage()
 {
     const {user, completedHabits, setCompletedHabits} = useContext(UserContext);
@@ -65,7 +66,6 @@ export default function TodayPage()
             { todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
             { todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
             { todayHabits.length == 0 && <LoadingBlocks/>}
-
         </div>    
     </TodayContainer>
     );

@@ -138,6 +138,7 @@ export default function HabitsPage()
 
 const HabitForm = styled.form`
 
+
     width: 340px;
     height: 180px;
     background: #FFFFFF;
@@ -221,11 +222,14 @@ const HabitForm = styled.form`
 const DaysContainer= styled.div`
     display: flex;
     margin: 8px 0 29px 19px;
+   
 `;
+
 
 const DaysContainerHabit = styled.div`
     display: flex;
     margin: 8px 0 0 14px;
+    
 `;
 
 const DayContainerHabit = styled.div`
@@ -250,6 +254,7 @@ const DayContainerHabit = styled.div`
     color: ${({id, days }) => days.includes(id) ? "#FFFFFF" : "#DBDBDB" };
 
     cursor: context-menu;
+    
 `;
 
 const Header = styled.div`
