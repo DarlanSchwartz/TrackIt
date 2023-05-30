@@ -2,8 +2,9 @@ import styled from "styled-components";
 import logo from '../../assets/track-it-logo.svg';
 import { ThreeDots } from  'react-loader-spinner';
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {Login} from '../../requests.js';
+import UserContext from "../../contexts/UserContext";
 
 export default function LoginPage()
 {
@@ -12,6 +13,7 @@ export default function LoginPage()
     const [loginIn,setLoginIn] = useState(false);
     const [userEmail,setUserEmail] = useState('');
     const [userPassword,setUserPassword] = useState('');
+    const { user, setUser } = useContext(UserContext);
 
     function LoginSucess(response,error)
     {
@@ -31,6 +33,8 @@ export default function LoginPage()
            
             return;
         }
+        
+        setUser({...user, name: response.data.name, image: response.data.image, email: response.data.email, token: response.data.token});
 
         navigate('/hoje');
     }

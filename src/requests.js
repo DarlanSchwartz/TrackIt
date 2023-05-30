@@ -40,6 +40,9 @@ const URL_SINGUP = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/a
 
 */
 
+const URL_GETHABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+
+
 
 export function Login(loginObj,callback)
 {
@@ -54,3 +57,19 @@ export function Singup(singupObj,callback)
     .then( (resp) => callback(resp,false))
     .catch((error) => callback(error,true));
 }
+
+export function GetAllHabits(habitsObjs,callback)
+{
+    axios.get(URL_GETHABITS,habitsObjs)
+    .then( (resp) => callback(resp.data,false))
+    .catch((error) => callback(error,true));
+}
+
+export function SaveHabit(habitObj,header,callback)
+{
+    axios.post(URL_GETHABITS,habitObj,header)
+    .then( (resp) => callback(resp.data,false))
+    .catch((error) => callback(error,true));
+}
+
+
