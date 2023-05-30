@@ -4,9 +4,10 @@ import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import { useContext } from "react";
 import { GetAllHabits ,DeleteHabit } from "../../requests";
-import { ThreeDots } from "react-loader-spinner";
+import {ThreeDots } from "react-loader-spinner";
 import { SaveHabit } from "../../requests";
 import { BsTrash } from "react-icons/bs";
+import LoadingBlocks from "../../Components/LoadingBlocks";
 
 export default function HabitsPage()
 {
@@ -109,7 +110,9 @@ export default function HabitsPage()
                 </HabitForm>
             }
 
-            {habits && habits.length == 0 && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione umhábito para começar a trackear!</p>}
+            {habits && habits.length == 0 && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
+
+            {!habits && <LoadingBlocks/>}
 
 
             {habits &&  habits.length > 0 && habits.map((hbt)=>{
@@ -371,6 +374,8 @@ const HabitContainer = styled.div`
         padding-left: 15px;
     }
 `;
+
+
 
 
 

@@ -42,6 +42,8 @@ const URL_SINGUP = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/a
 
 const URL_GETHABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
 
+const URL_GETTODAYHABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+
 const URL_DELETEHABIT = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/';
 
 
@@ -63,6 +65,13 @@ export function Singup(singupObj,callback)
 export function GetAllHabits(habitsObjs,callback)
 {
     axios.get(URL_GETHABITS,habitsObjs)
+    .then( (resp) => callback(resp.data,false))
+    .catch((error) => callback(error,true));
+}
+
+export function GetTodayHabits(habitsObjs,callback)
+{
+    axios.get(URL_GETTODAYHABITS,habitsObjs)
     .then( (resp) => callback(resp.data,false))
     .catch((error) => callback(error,true));
 }
@@ -92,6 +101,15 @@ export function DeleteHabit(habitID,header,callback)
     axios.delete(URL_DELETEHABIT + habitID,header)
     .then( (resp) => callback(resp,false))
     .catch((error) => callback(error,true));
+}
+
+export function SetHabitChecked(id,value,header,callback)
+{
+    const URL = value === true ? `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check` : `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`;
+
+    axios.post(URL, null, header)
+    .then( (resp) => callback(resp))
+    .catch((error) => callback(error));
 }
 
 

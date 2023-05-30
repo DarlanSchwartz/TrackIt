@@ -5,8 +5,9 @@ import { useContext, useEffect, useState } from "react";
 
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
-import { GetAllHabits } from "../../requests";
+import { GetTodayHabits,SetHabitChecked } from "../../requests";
 import Habit from "./Habit";
+import LoadingBlocks from "../../Components/LoadingBlocks";
 
 
 export default function TodayPage()
@@ -16,18 +17,40 @@ export default function TodayPage()
 
     function UpdateHabits(habistArr,error)
     {
+        if(error === true)
+        {
+            alert(habistArr);
+            return;
+        }
+
         setTodayHabits(habistArr);
+        setCompletedHabits((habistArr.filter((habit) => habit.done).length / habistArr.length) * 100);
     }
 
     function toggle(id)
     {
-        console.log(id);
+        todayHabits.find((habit) => habit.id === id).done ? uncheckHabit(id): checkHabit(id);
     }
 
     useEffect(()=>
     {
-       GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits);
+        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits);
     },[]);
+
+    function checkHabit(id) 
+    {
+        SetHabitChecked(id,true,{headers: {Authorization: `Bearer ${user.token}`}},checkEnded);
+    }
+
+    function uncheckHabit(id)
+    {
+        SetHabitChecked(id,false,{headers: {Authorization: `Bearer ${user.token}`}},checkEnded );
+    }
+
+    function checkEnded(resp)
+    {
+        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits)
+    }
 
     
 
@@ -39,12 +62,10 @@ export default function TodayPage()
             {todayHabits.length > 0 && completedHabits === 0 && <p className="habits-done"> Nenhum hábito concluído ainda</p>}
         </div>
         <div className="today-habits">
-            { todayHabits.length > 0 ? todayHabits.map((habit) => 
-                <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)
-            : 
-            <div className="text-no-habits">
-                <p>Você não tem habitos para hoje</p>
-            </div> }
+            { todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
+            { todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
+            { todayHabits.length == 0 && <LoadingBlocks/>}
+
         </div>    
     </TodayContainer>
     );
@@ -53,7 +74,7 @@ export default function TodayPage()
 
 const TodayContainer = styled.div`
     
-    min-height: 100vh;
+    min-height: 100svh;
     background-color: #E5E5E5;
     .header {
         padding-top: 98px;
