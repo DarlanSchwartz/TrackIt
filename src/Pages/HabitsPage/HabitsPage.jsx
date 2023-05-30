@@ -3,7 +3,7 @@ import { BsDashSquareFill, BsPlusSquareFill } from "react-icons/bs";
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import { useContext } from "react";
-import { GetAllHabits } from "../../requests";
+import { GetAllHabits ,DeleteHabit } from "../../requests";
 import { ThreeDots } from "react-loader-spinner";
 import { SaveHabit } from "../../requests";
 import { BsTrash } from "react-icons/bs";
@@ -60,7 +60,25 @@ export default function HabitsPage()
         }
 
         setHabits(responseHabits);
-        
+    }
+
+    function deleteHabit(id)
+    {
+        if (window.confirm('Deseja realmente excluir esse hábito?')) {
+            DeleteHabit(id,{headers: {Authorization: `Bearer ${user.token}` }},deleteSuceeced);
+        }
+
+    }
+
+    function deleteSuceeced(resp,error)
+    {
+        if(error)
+        {
+            alert(error);
+            return;
+        }
+
+        GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
     }
     
     
@@ -106,7 +124,7 @@ export default function HabitsPage()
                                 </DayContainerHabit>)
                             })}
                         </DaysContainerHabit>
-                        <BsTrash className="trash-icon" onClick={() => deleteHabit(id)}/>
+                        <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
                     </HabitContainer>
                     );
             })}

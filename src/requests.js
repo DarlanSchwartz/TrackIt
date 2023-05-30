@@ -42,6 +42,8 @@ const URL_SINGUP = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/a
 
 const URL_GETHABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
 
+const URL_DELETEHABIT = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/';
+
 
 
 export function Login(loginObj,callback)
@@ -69,6 +71,26 @@ export function SaveHabit(habitObj,header,callback)
 {
     axios.post(URL_GETHABITS,habitObj,header)
     .then( (resp) => callback(resp.data,false))
+    .catch((error) => callback(error,true));
+}
+
+/*
+
+axios.delete(URL, {
+        headers: {
+          Authorization: authorizationToken
+        },
+        data: {
+          source: source
+        }
+      });
+
+*/
+
+export function DeleteHabit(habitID,header,callback)
+{
+    axios.delete(URL_DELETEHABIT + habitID,header)
+    .then( (resp) => callback(resp,false))
     .catch((error) => callback(error,true));
 }
 
