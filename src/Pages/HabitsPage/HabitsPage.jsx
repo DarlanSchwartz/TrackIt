@@ -14,13 +14,21 @@ export default function HabitsPage()
     const [isCreating,setisCreating] = useState(false);
     const [sendingHabit, setSendingHabit] = useState(false);
     const [habits, setHabits] = useState();
-    const { user } = useContext(UserContext);
+    const { user ,setUser } = useContext(UserContext);
     const daysOfWeek = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const [habit, setHabit] = useState({name:"", days:[]});
 
     useEffect(()=>
     {
-       GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
+        if(localStorage.getItem('user-trackit'))
+        {
+            const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
+            setUser(lsUser);
+            GetAllHabits({headers: {Authorization: `Bearer ${lsUser.token}` }},updateHabits);
+            return;
+        }
+       
+        GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
     },[]);
 
     function selectionDays(day) {
@@ -105,7 +113,7 @@ export default function HabitsPage()
                     </DaysContainer>
                     <div className="action-btns">
                         <p onClick={()=> endCreation()}>Cancelar</p>
-                        <button type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar") }</button>
+                        <button disabled={sendingHabit} type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar") }</button>
                     </div>
                 </HabitForm>
             }
@@ -119,16 +127,16 @@ export default function HabitsPage()
 
                     return(
                         <HabitContainer className="habit" key={hbt.id}>
-                        <p className="habit-name">{hbt.name}</p>
-                        <DaysContainerHabit >
-                            {daysOfWeek.map((day, index) => { return (
-                                <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
-                                    <p>{day}</p>
-                                </DayContainerHabit>)
-                            })}
-                        </DaysContainerHabit>
-                        <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
-                    </HabitContainer>
+                            <p className="habit-name">{hbt.name}</p>
+                            <DaysContainerHabit >
+                                {daysOfWeek.map((day, index) => { return (
+                                    <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
+                                        <p>{day}</p>
+                                    </DayContainerHabit>)
+                                })}
+                            </DaysContainerHabit>
+                            <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
+                        </HabitContainer>
                     );
             })}
        </HabitsContainer>
@@ -213,6 +221,10 @@ const HabitForm = styled.form`
                 color: #52B6FF;
                 background-color: white;
             }
+            &:disabled{
+                background-color: #52B6FF;
+                opacity: 0.7;
+            }
         }
     }
 
@@ -229,7 +241,6 @@ const DaysContainer= styled.div`
 const DaysContainerHabit = styled.div`
     display: flex;
     margin: 8px 0 0 14px;
-    
 `;
 
 const DayContainerHabit = styled.div`
@@ -252,7 +263,7 @@ const DayContainerHabit = styled.div`
     font-weight: 400;
     font-size: 19.976px;
     color: ${({id, days }) => days.includes(id) ? "#FFFFFF" : "#DBDBDB" };
-
+    margin-bottom: 10px;
     cursor: context-menu;
     
 `;
@@ -348,7 +359,8 @@ const DayContainer = styled.div`
 
 const HabitContainer = styled.div`
     width: 340px;
-    height: 91px;
+    height: auto;
+    min-height: 91px;
     background-color: #FFFFFF;
     border-radius: 5px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -377,6 +389,8 @@ const HabitContainer = styled.div`
         color: #666666;
         padding-top: 13px;
         padding-left: 15px;
+        overflow: hidden;
+        margin-right: 30px;
     }
 `;
 

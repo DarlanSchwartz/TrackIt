@@ -2,7 +2,7 @@ import styled from "styled-components";
 import logo from '../../assets/track-it-logo.svg';
 import { ThreeDots } from  'react-loader-spinner';
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {Login} from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
 
@@ -15,9 +15,16 @@ export default function LoginPage()
     const [userPassword,setUserPassword] = useState('');
     const { user, setUser } = useContext(UserContext);
 
+    useEffect( ()=> {
+        if(localStorage.getItem('user-trackit'))
+        {
+            setUser(JSON.parse(localStorage.getItem('user-trackit')));
+            navigate('/hoje');
+        }
+    },[]);
+
     function LoginSucess(response,error)
     {
-        
         setLoginIn(false);
         
         if(error == true)
@@ -33,8 +40,18 @@ export default function LoginPage()
            
             return;
         }
+
+        const userObj = {...user, name: response.data.name, image: response.data.image, email: response.data.email, token: response.data.token};
         
-        setUser({...user, name: response.data.name, image: response.data.image, email: response.data.email, token: response.data.token});
+        if(localStorage.getItem('user-trackit') !==undefined)
+        {
+            localStorage.setItem('user-trackit',JSON.stringify(userObj));
+            setUser(userObj);
+        }
+        else
+        {
+            setUser(JSON.parse(localStorage.getItem('user-trackit')));
+        }
 
         navigate('/hoje');
     }
@@ -70,7 +87,7 @@ const PageContainer = styled.div`
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
-        font-size: 13.976px;
+        font-size: 14px;
         line-height: 17px;
         text-align: center;
         text-decoration-line: underline;
@@ -103,6 +120,10 @@ const LoginForm = styled.form`
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:disabled{
+            opacity: 0.7;
+        }
 
         &:hover{
             color: #52B6FF;

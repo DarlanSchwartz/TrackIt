@@ -13,8 +13,9 @@ import LoadingBlocks from "../../Components/LoadingBlocks";
 
 export default function TodayPage()
 {
-    const {user, completedHabits, setCompletedHabits} = useContext(UserContext);
+    const {user,setUser, completedHabits, setCompletedHabits} = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState([]);
+    
 
     function UpdateHabits(habistArr,error)
     {
@@ -35,7 +36,16 @@ export default function TodayPage()
 
     useEffect(()=>
     {
+        if(localStorage.getItem('user-trackit'))
+        {
+            const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
+            setUser(lsUser);
+            GetTodayHabits({headers: {Authorization: `Bearer ${lsUser.token}`}},UpdateHabits);
+            return;
+        }
+
         GetTodayHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits);
+        
     },[]);
 
     function checkHabit(id) 
