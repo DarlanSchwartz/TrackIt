@@ -149,7 +149,7 @@ const HabitForm = styled.form`
 
     width: 340px;
     height: 180px;
-    background: #FFFFFF;
+    background: white;
     border-radius: 5px;
     text-align: center;
     opacity: 1;
@@ -301,7 +301,7 @@ const HabitsContainer = styled.div`
     flex-direction: column;
     align-items: center;
     background-color: #E5E5E5;
-    min-width: 100vw;
+        
     min-height: 100vh;
     padding-bottom: 100px;
     
