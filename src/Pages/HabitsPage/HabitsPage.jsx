@@ -93,7 +93,7 @@ export default function HabitsPage()
     
     return (
        <HabitsContainer>
-            <Header>
+            <Header creating = {isCreating.toString()}>
                 <h1>Meus Hábitos</h1>
                 {!isCreating && <BsPlusSquareFill className="add-habit-btn" onClick={()=>setisCreating(true)}/>}
                 {isCreating && <BsDashSquareFill className="add-habit-btn" onClick={()=>setisCreating(false)}/>}
@@ -131,7 +131,7 @@ export default function HabitsPage()
                             <DaysContainerHabit >
                                 {daysOfWeek.map((day, index) => { return (
                                     <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
-                                        <p>{day}</p>
+                                        <p className="day-name">{day}</p>
                                     </DayContainerHabit>)
                                 })}
                             </DaysContainerHabit>
@@ -163,6 +163,7 @@ const HabitForm = styled.form`
             padding-left: 11px;
             margin-top: 18px;
             border-radius: 5px;
+            font-size: 20px;
             
             &:focus 
             {
@@ -261,8 +262,11 @@ const DayContainerHabit = styled.div`
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
-    font-size: 19.976px;
-    color: ${({id, days }) => days.includes(id) ? "#FFFFFF" : "#DBDBDB" };
+    font-size: 20px;
+    .day-name{
+        color: ${({id, days }) => days.includes(id) ? "#ffffff" : "#DBDBDB" };
+    }
+    
     margin-bottom: 10px;
     cursor: context-menu;
     
@@ -287,11 +291,11 @@ const Header = styled.div`
     .add-habit-btn {
         width: 40px;
         height: 35px;
-        color: #52B6FF;
+        color: ${(props) => props.creating  == 'true' ? 'red' :'#52B6FF'}; 
         cursor: pointer;
         transition: all 200ms;
         &:hover{
-            color:#2a648d;
+            color:${(props) => props.creating == 'true' ? '#8d2a2f' : '#2a648d'};
         }
     }
 `;
@@ -391,6 +395,7 @@ const HabitContainer = styled.div`
         padding-left: 15px;
         overflow: hidden;
         margin-right: 30px;
+        padding-bottom: 5px;
     }
 `;
 
