@@ -16,7 +16,9 @@ export default function Habit({habit, handleClick}) {
 }
 
 const TodayHabitContainer = styled.div`
-    width: 340px;
+    width: calc(100% - 36px);
+    margin-left: 18px;
+    margin-right: 18px;
     min-height: 94px;
     background-color:#f7f7f7;
     border-radius: 5px;

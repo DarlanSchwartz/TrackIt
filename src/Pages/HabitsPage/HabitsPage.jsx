@@ -48,7 +48,6 @@ export default function HabitsPage()
         if(update === true)
         {
             GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
-            console.log(habits);
         }
     }
 
@@ -123,22 +122,25 @@ export default function HabitsPage()
             {!habits && <LoadingBlocks/>}
 
 
+            <MyHabits creating = {isCreating.toString()}>
             {habits &&  habits.length > 0 && habits.map((hbt)=>{
 
-                    return(
-                        <HabitContainer className="habit" key={hbt.id}>
-                            <p className="habit-name">{hbt.name}</p>
-                            <DaysContainerHabit >
-                                {daysOfWeek.map((day, index) => { return (
-                                    <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
-                                        <p className="day-name">{day}</p>
-                                    </DayContainerHabit>)
-                                })}
-                            </DaysContainerHabit>
-                            <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
-                        </HabitContainer>
-                    );
-            })}
+                        return(
+                            <HabitContainer className="habit" key={hbt.id}>
+                                <p className="habit-name">{hbt.name}</p>
+                                <DaysContainerHabit >
+                                    {daysOfWeek.map((day, index) => { return (
+                                        <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
+                                            <p className="day-name">{day}</p>
+                                        </DayContainerHabit>)
+                                    })}
+                                </DaysContainerHabit>
+                                <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
+                            </HabitContainer>
+                        );
+                        })}
+            </MyHabits>
+
        </HabitsContainer>
     );
 }
@@ -146,18 +148,18 @@ export default function HabitsPage()
 
 const HabitForm = styled.form`
 
-
-    width: 340px;
+    width: calc(100% - 36px);
     height: 180px;
     background: white;
     border-radius: 5px;
     text-align: center;
     opacity: 1;
     margin-bottom: 20px;
+    margin-top: 40px;
     
 
         input {
-            width: 303px;
+            width: calc(100% - 36px);
             height: 45px;
             border: solid 1px rgba(212, 212, 212, 1);
             padding-left: 11px;
@@ -281,16 +283,22 @@ const Header = styled.div`
 
 
     h1 {
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 22.976px;
-    color: #126BA5;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 22.976px;
+        color: #126BA5;
+        position: fixed;
+        left: 20px;
+        top: 100px;
     }
 
     .add-habit-btn {
         width: 40px;
         height: 35px;
+        position: fixed;
+        right: 20px;
+        top: 94px;
         color: ${(props) => props.creating  == 'true' ? 'red' :'#52B6FF'}; 
         cursor: pointer;
         transition: all 200ms;
@@ -298,6 +306,15 @@ const Header = styled.div`
             color:${(props) => props.creating == 'true' ? '#8d2a2f' : '#2a648d'};
         }
     }
+`;
+
+const MyHabits = styled.div`
+
+    margin-top: ${(props) => props.creating == 'true' ? 0 : '30px'};
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
 `;
 
 const HabitsContainer = styled.div`
@@ -308,12 +325,13 @@ const HabitsContainer = styled.div`
         
     min-height: 100vh;
     padding-bottom: 100px;
+
     
     p {
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
-        font-size: 17.976px;
+        font-size: 18px;
         color: #666666;
         padding: 0 10px;
     }
@@ -321,7 +339,6 @@ const HabitsContainer = styled.div`
     .no-habits-message
     {
         width : 340px;
-        
     }
 `;
 
@@ -362,7 +379,7 @@ const DayContainer = styled.div`
 
 
 const HabitContainer = styled.div`
-    width: 340px;
+    width: calc(100% - 36px);
     height: auto;
     min-height: 91px;
     background-color: #FFFFFF;
@@ -370,6 +387,9 @@ const HabitContainer = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     position: relative;
     margin-bottom: 10px;
+
+   
+    
 
     .trash-icon {
         position: absolute;
