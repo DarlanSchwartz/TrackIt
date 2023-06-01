@@ -112,4 +112,13 @@ export function SetHabitChecked(id,value,header,callback)
     .catch((error) => callback(error));
 }
 
+const URL_HISTORY_HABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily';
+
+export function GetHistoryHabits(header,callback)
+{
+    axios.get(URL_HISTORY_HABITS, header)
+    .then( (resp) => callback(resp.data))
+    .catch((error) => callback(error));
+}
+
 

@@ -57,7 +57,6 @@ const ResetStyle = createGlobalStyle`
 		font-family: 'Lexend Deca', sans-serif;
 		box-sizing: border-box;
 	}
-
 `
 
 export default ResetStyle

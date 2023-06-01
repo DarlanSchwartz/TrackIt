@@ -19,15 +19,14 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{user, setUser, completedHabits, setCompletedHabits}}>
-      {currentLocation.pathname != "/" && currentLocation.pathname != "/cadastro" && <> <Header/> <Footer/> </>}
-      <Routes>
-        <Route path='/' element = {<LoginPage/>}/>
-        <Route path='/cadastro' element={<SingupPage/>}/>
-        <Route path="/hoje" element={<TodayPage />}/>
-        <Route path="/habitos" element={<HabitsPage />}/>
-        <Route path="/historico" element={<HistoryPage />}/>
-        
-      </Routes>
-      </UserContext.Provider>
+        {currentLocation.pathname != "/" && currentLocation.pathname != "/cadastro" && <> <Header/> <Footer/> </>}
+        <Routes>
+            <Route path='/' element = {<LoginPage/>}/>
+            <Route path='/cadastro' element={<SingupPage/>}/>
+            <Route path="/hoje" element={<TodayPage />}/>
+            <Route path="/habitos" element={<HabitsPage />}/>
+            <Route path="/historico" element={<HistoryPage />}/>
+        </Routes>
+    </UserContext.Provider>
   )
 }

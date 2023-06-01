@@ -130,33 +130,29 @@ const LoginForm = styled.form`
             background-color: white;
             border: 1px solid #52B6FF;
         }
-}
-
-
-input{
-    width: 303px;
-    height: 45px;
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    font-size: 20px;
-    padding-left: 10px;
-
-    &:focus {
-            outline: none;
-        }
-    
-    
-    
-    &::placeholder{
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 20px;
-        line-height: 25px;
-       
-        color: #DBDBDB;
     }
 
-}
+
+    input{
+        width: 303px;
+        height: 45px;
+        border: 1px solid #D5D5D5;
+        border-radius: 5px;
+        font-size: 20px;
+        padding-left: 10px;
+
+        &:focus {
+                outline: none;
+        }
+        &::placeholder{
+            font-family: 'Lexend Deca';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 25px;
+            color: #DBDBDB;
+        }
+
+    }
 
 `;
