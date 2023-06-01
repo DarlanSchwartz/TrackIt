@@ -14,7 +14,7 @@ import LoadingBlocks from "../../Components/LoadingBlocks";
 export default function TodayPage()
 {
     const {user,setUser, completedHabits, setCompletedHabits} = useContext(UserContext);
-    const [todayHabits, setTodayHabits] = useState([]);
+    const [todayHabits, setTodayHabits] = useState(null);
     
 
     function UpdateHabits(habistArr,error)
@@ -69,13 +69,14 @@ export default function TodayPage()
         <TodayContainer amount = {completedHabits.toFixed()}>
         <div className="header">
             <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
-            {todayHabits.length > 0 && completedHabits > 0 && <p className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
-            {todayHabits.length > 0 && completedHabits === 0 && <p className="habits-done"> Nenhum hábito concluído ainda</p>}
+            { todayHabits !=null && todayHabits.length > 0 && completedHabits > 0 && <p className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
+            { todayHabits !=null && todayHabits.length > 0 && completedHabits === 0 && <p className="habits-done"> Nenhum hábito concluído ainda</p>}
         </div>
         <div className="today-habits">
-            { todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
-            { todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
-            { todayHabits.length == 0 && <LoadingBlocks/>}
+            { todayHabits !=null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
+            { todayHabits ==null && <div className="text-no-habits"><p>Carregando...</p></div>}
+            { todayHabits ===null && <LoadingBlocks/>}
+            { todayHabits !=null && todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
         </div>    
     </TodayContainer>
     );
@@ -117,7 +118,13 @@ const TodayContainer = styled.div`
     .text-no-habits {
         position: absolute;
         left: 0;
+        margin-top: 10px;
         margin-left: 17px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        color: #BABABA;
     }
 
         

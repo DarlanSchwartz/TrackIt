@@ -36,7 +36,7 @@ const TodayHabitContainer = styled.div`
         font-size: 19.976px;
         color: #666666;
         margin: 13px 0 7px 15px;
-        width: 235px;
+        width: calc(100% - 105px);
         flex-wrap: wrap;
     }
 
