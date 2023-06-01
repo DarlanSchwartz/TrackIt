@@ -12,7 +12,7 @@ export default function Header()
     return (
        <HeaderSC>
         <HeaderApp >
-                <span>TrackIt</span>
+                <span onClick={() => navigate('/hoje')}>TrackIt</span>
                 <img onClick={()=> setShowDropdown(!showDropdown)} src={user.image} alt="profile" />
         </HeaderApp>
 
@@ -25,10 +25,11 @@ const HeaderSC = styled.div`
 
 button{
     position: fixed;
-    right: 14px;
-    top: 80px;
-    background-color: #ff5252;
-    border: 0;
+    right: 84px;
+    top: 25px;
+    z-index: 4;
+    background-color: #126BA5;
+    border: 1px solid white;
     border-radius: 5px;
     color: white;
     width: 60px;
@@ -36,8 +37,8 @@ button{
     cursor: pointer;
     transition: all 200ms;
     &:hover{
-        color: #ff5252;
-        border: 1px solid #ff5252;
+        color: #126BA5;
+        border: 1px solid #126BA5;
         background-color: white;
     }
 }
@@ -73,5 +74,6 @@ const HeaderApp = styled.div`
         font-weight: 400;
         font-size: 38.982px;
         color: #FFFFFF;
+        cursor: pointer;
     }
 `

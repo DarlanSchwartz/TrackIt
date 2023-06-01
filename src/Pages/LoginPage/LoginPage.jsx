@@ -153,6 +153,10 @@ const LoginForm = styled.form`
             color: #DBDBDB;
         }
 
+        &:disabled{
+            opacity: 0.7;
+        }
+
     }
 
 `;
