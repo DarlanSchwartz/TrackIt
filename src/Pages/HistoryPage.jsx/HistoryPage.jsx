@@ -12,7 +12,7 @@ export default function HistoryPage()
     const { user ,setUser } = useContext(UserContext);
     const [calendar, setCalendar] = useState(new Date());
     const today = new Date();
-    const [historyDays , setHistoryDays] = useState([]);
+    const [historyDays , setHistoryDays] = useState(null);
 
     const dateOptions = {
         year: 'numeric',
@@ -41,9 +41,9 @@ export default function HistoryPage()
 
     function tileClassName({ date, view }) 
     {
-        if(view != 'month')
+        if(view != 'month' || historyDays == null)
         {
-            return;
+            return 'react-calendar__tile';
         }
         
         let doneDays = [];
@@ -72,11 +72,14 @@ export default function HistoryPage()
         <HistoryPageContainer>
              <div className="header">
                 <h1>Histórico</h1>
+                {historyDays && historyDays.length == 0 && <p className="no-historic">Nada para mostrar aqui</p>}
+                {!historyDays &&  <p className="no-historic">Carregando...</p>}
             </div>
         
-            {historyDays.length == 0 && <LoadingBlocks/>}
+            {!historyDays && <LoadingBlocks/>}
+            
 
-            {historyDays.length > 0 && 
+            {historyDays &&  historyDays.length > 0 && 
             
             <Calendar 
                 className='react-calendar'
@@ -97,17 +100,28 @@ const HistoryPageContainer = styled.div`
     align-items: center;
     flex-direction: column;
 
+
     .header {
         display: flex;
         justify-content: flex-start;
-        align-items: center;
         position: absolute;
-        left: 30px;
-        top: 100px;
+        flex-direction: column;
+        gap: 10px;
+        left: 20px;
+        top: 95px;
+        
         h1 {
             font-family: 'Lexend Deca';
             font-size: 25px;
             color: #126ba5;
+            
+        }
+        
+        .no-historic{
+            font-family: 'Lexend Deca';
+            font-size: 18px;
+            font-weight: 400;
+            color: rgb(186, 186, 186);
         }
     }
 

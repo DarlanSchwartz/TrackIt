@@ -100,7 +100,7 @@ export default function HabitsPage()
 
             {isCreating && 
                 <HabitForm onSubmit={(e) => saveHabit(e)}>
-                    <input pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e)=> setHabit({...habit, name: e.target.value})}/>
+                    <input disabled = {sendingHabit} pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e)=> setHabit({...habit, name: e.target.value})}/>
                     <DaysContainer>
                     {daysOfWeek.map((day,index) => {
                         return (
@@ -117,7 +117,7 @@ export default function HabitsPage()
                 </HabitForm>
             }
 
-            {habits && habits.length == 0 && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
+            {(habits && habits.length == 0 && sendingHabit == false) && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
 
             {!habits && <LoadingBlocks/>}
 
@@ -287,7 +287,7 @@ const Header = styled.div`
         font-style: normal;
         font-weight: 400;
         font-size: 22.976px;
-        color: #126BA5;
+        color:  rgba(18, 107, 165, 1);
         position: fixed;
         left: 20px;
         top: 100px;
@@ -338,7 +338,9 @@ const HabitsContainer = styled.div`
 
     .no-habits-message
     {
-        width : 340px;
+        width : calc(100% - 16px);
+        margin-top: 30px;
+
     }
 `;
 
