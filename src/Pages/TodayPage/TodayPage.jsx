@@ -66,7 +66,7 @@ export default function TodayPage()
     
 
     return(
-        <TodayContainer>
+        <TodayContainer amount = {completedHabits.toFixed()}>
         <div className="header">
             <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
             {todayHabits.length > 0 && completedHabits > 0 && <p className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
@@ -94,17 +94,17 @@ const TodayContainer = styled.div`
             font-style: normal;
             font-weight: 400;
             font-size: 22.976px;
-            color: #126BA5;
+            color: rgba(18, 107, 165, 1);
             text-transform: capitalize;
             margin: 0 0 5px 17px;
         }
     
-        p {
+        .habits-done {
             font-family: 'Lexend Deca';
             font-style: normal;
             font-weight: 400;
-            font-size: 17.976px;
-            color: #BABABA;
+            font-size: 18px;
+            color: ${props => props.amount == 0 ? '#BABABA' : 'rgba(143, 197, 73, 1)'};
             margin: 0 0 28px 17px;
         }
     }
@@ -120,13 +120,7 @@ const TodayContainer = styled.div`
         margin-left: 17px;
     }
 
-        p {
-            font-family: 'Lexend Deca';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 17.976px;
-            color: #BABABA;
-        }
+        
     }
 
     .habits-done {

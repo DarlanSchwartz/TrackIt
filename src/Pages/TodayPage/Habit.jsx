@@ -42,7 +42,7 @@ const TodayHabitContainer = styled.div`
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
-        font-size: 12.976px;
+        font-size: 13px;
         color: #666666;
         margin: 0 0 5px 15px;
 
