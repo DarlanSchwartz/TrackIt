@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
-import { addDays, differenceInCalendarDays } from 'date-fns';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import styled from "styled-components";
 import 'react-calendar/dist/Calendar.css';
 import { GetHistoryHabits } from "../../requests";
+import LoadingBlocks from "../../Components/LoadingBlocks";
 
 export default function HistoryPage()
 {
@@ -13,27 +13,12 @@ export default function HistoryPage()
     const [calendar, setCalendar] = useState(new Date());
     const today = new Date();
     const [historyDays , setHistoryDays] = useState([]);
+
     const dateOptions = {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',
     };
-/* [
-    {
-        "day": "20/05/2021",
-        "habits": [
-            {
-                "id": 3,
-                "name": "Acordar",
-                "date": "2021-05-20T12:00:00.000Z",
-                "weekDay": 4,
-                "historyId": null,
-                "done": false
-            }
-        ]
-    },
-]*/
-
 
     useEffect(()=>
     {
@@ -56,6 +41,11 @@ export default function HistoryPage()
 
     function tileClassName({ date, view }) 
     {
+        if(view != 'month')
+        {
+            return;
+        }
+        
         let doneDays = [];
         
         historyDays.filter((day) =>  day.habits.every((habit) => habit.done)).map(fdate => doneDays.push(fdate.day));
@@ -81,16 +71,21 @@ export default function HistoryPage()
     return (
         <HistoryPageContainer>
              <div className="header">
-                <h1>Historico</h1>
+                <h1>Histórico</h1>
             </div>
         
-            <Calendar className='react-calendar'
+            {historyDays.length == 0 && <LoadingBlocks/>}
+
+            {historyDays.length > 0 && 
+            
+            <Calendar 
+                className='react-calendar'
                 calendarType={'US'}
                 maxDate={today}
                 onChange={setCalendar} 
                 value={calendar} 
                 tileClassName={tileClassName}    
-            />
+            />}
         </HistoryPageContainer>
     );
 }
@@ -100,14 +95,15 @@ const HistoryPageContainer = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
 
     .header {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
-        margin-bottom: 28px;
+        position: absolute;
+        left: 30px;
+        top: 100px;
         h1 {
             font-family: 'Lexend Deca';
             font-size: 25px;
@@ -116,9 +112,10 @@ const HistoryPageContainer = styled.div`
     }
 
     .react-calendar {
-        width: 100%;
+        width: 90%;
         border: none;
         border-radius: 10px;
+        margin-top: 138px;
 
         &__navigation button:last-child {
             border-top-right-radius: 10px;
@@ -130,6 +127,8 @@ const HistoryPageContainer = styled.div`
             justify-content: center;
             align-items: center;
             text-align: center;
+            transition: all 200ms;
+            
 
             &:last-child {
                 border-bottom-right-radius: 10px;
@@ -166,6 +165,11 @@ const HistoryPageContainer = styled.div`
                 }
             }
 
+            &:hover
+            {
+                background-color: #e2e2e2;
+            }
+
             &--active {
 
                 background: #fff;
@@ -186,7 +190,7 @@ const HistoryPageContainer = styled.div`
                     &:hover,
                     &:focus {
                         background: #fff;
-                        p {
+                        abbr {
                             background: #1087ff;
                             border-radius: 50%;
                             width: 40px;
