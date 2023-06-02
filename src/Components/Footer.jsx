@@ -13,14 +13,14 @@ export default function Footer() {
     return (
         <MenuContainer data-test="menu">
             <p data-test="habit-link" onClick={() => navigate('/habitos')}>Hábitos</p>
-            <Link to="/hoje">
+            <Link data-test="today-link" to="/hoje">
                 <CircularProgressbar
                     className="progressbar"
                     value={completedHabits}
                     text={'Hoje'}
                     background={true}
                     backgroundPadding={6}
-                    data-test="today-link"
+                    
                     styles={{
                         path: {
                             stroke: `#fff`,
