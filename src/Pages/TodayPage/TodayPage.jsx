@@ -8,6 +8,7 @@ import UserContext from "../../contexts/UserContext";
 import { GetTodayHabits,SetHabitChecked } from "../../requests";
 import Habit from "./Habit";
 import LoadingBlocks from "../../Components/LoadingBlocks";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -15,16 +16,17 @@ export default function TodayPage()
 {
     const {user,setUser, completedHabits, setCompletedHabits} = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState(null);
+    const navigate = useNavigate();
     
 
     function UpdateHabits(habistArr,error)
     {
         if(error === true)
         {
-            alert(habistArr);
+            navigate('/error');
             return;
         }
-
+        
         setTodayHabits(habistArr);
         setCompletedHabits((habistArr.filter((habit) => habit.done).length / habistArr.length) * 100);
     }
@@ -60,7 +62,7 @@ export default function TodayPage()
 
     function checkEnded(resp)
     {
-        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits)
+        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}`}},UpdateHabits)
     }
 
     
@@ -68,9 +70,9 @@ export default function TodayPage()
     return(
         <TodayContainer amount = {completedHabits.toFixed()}>
         <div className="header">
-            <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
-            { todayHabits !=null && todayHabits.length > 0 && completedHabits > 0 && <p className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
-            { todayHabits !=null && todayHabits.length > 0 && completedHabits === 0 && <p className="habits-done"> Nenhum hábito concluído ainda</p>}
+            <h1 data-test="today" >{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
+            { todayHabits !=null && todayHabits.length > 0 && completedHabits > 0 && <p data-test="today-counter"  className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
+            { todayHabits !=null && todayHabits.length > 0 && completedHabits === 0 && <p data-test="today-counter" className="habits-done"> Nenhum hábito concluído ainda</p>}
         </div>
         <div className="today-habits">
             { todayHabits !=null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
@@ -94,7 +96,7 @@ const TodayContainer = styled.div`
             font-family: 'Lexend Deca';
             font-style: normal;
             font-weight: 400;
-            font-size: 22.976px;
+            font-size: 23px;
             color: rgba(18, 107, 165, 1);
             text-transform: capitalize;
             margin: 0 0 5px 17px;

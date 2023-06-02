@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Routes,Route, useLocation } from 'react-router-dom';
-import LoginPage from './Pages/LoginPage/LoginPage';
-import SingupPage from './Pages/LoginPage/SingupPage';
-import Header from './Components/Header';
 import UserContext from './contexts/UserContext';
+import Header from './Components/Header';
+import LoginPage from './Pages/LoginPage/LoginPage';
+import SingupPage from './Pages/LoginPage/SingupPage.jsx';
 import TodayPage from './Pages/TodayPage/TodayPage';
 import Footer from './Components/Footer.jsx';
 import HabitsPage from './Pages/HabitsPage/HabitsPage.jsx';
-import HistoryPage from './Pages/HistoryPage.jsx/HistoryPage';
+import HistoryPage from './Pages/HistoryPage.jsx/HistoryPage.jsx';
+import ErrorPage from './Pages/ErrorPage/ErrorPage.jsx';
 
 
 export default function App() {
@@ -26,6 +27,8 @@ export default function App() {
             <Route path="/hoje" element={<TodayPage />}/>
             <Route path="/habitos" element={<HabitsPage />}/>
             <Route path="/historico" element={<HistoryPage />}/>
+            <Route path="*" element={<ErrorPage generic ='true'/>}/>
+            <Route path="/error" element={<ErrorPage generic ='false'/>}/>
         </Routes>
     </UserContext.Provider>
   )

@@ -11,8 +11,8 @@ export default function Footer() {
     const navigate = useNavigate();
 
     return (
-        <MenuContainer>
-            <p onClick={() => navigate('/habitos')}>Hábitos</p>
+        <MenuContainer data-test="menu">
+            <p data-test="habit-link" onClick={() => navigate('/habitos')}>Hábitos</p>
             <Link to="/hoje">
                 <CircularProgressbar
                     className="progressbar"
@@ -20,6 +20,7 @@ export default function Footer() {
                     text={'Hoje'}
                     background={true}
                     backgroundPadding={6}
+                    data-test="today-link"
                     styles={{
                         path: {
                             stroke: `#fff`,
@@ -40,7 +41,7 @@ export default function Footer() {
                     }}
                 />
             </Link>
-            <p onClick={() => navigate('/historico')}>Histórico</p>
+            <p data-test="history-link" onClick={() => navigate('/historico')}>Histórico</p>
         </MenuContainer>
     );
 };

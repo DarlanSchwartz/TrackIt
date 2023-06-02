@@ -10,10 +10,10 @@ export default function Header()
     const navigate = useNavigate();
 
     return (
-       <HeaderSC>
-        <HeaderApp >
+       <HeaderSC data-test="header" >
+        <HeaderApp>
                 <span onClick={() => navigate('/hoje')}>TrackIt</span>
-                <img onClick={()=> setShowDropdown(!showDropdown)} src={user.image} alt="profile" />
+                <img onClick={()=> setShowDropdown(!showDropdown)} src={user.image} alt="profile" data-test="avatar" />
         </HeaderApp>
 
         {showDropdown && <button onClick={()=> { localStorage.removeItem('user-trackit'); navigate('/');}} className="logout-btn">Sair</button>}

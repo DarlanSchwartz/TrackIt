@@ -1,16 +1,14 @@
 import { BsCheckSquareFill } from "react-icons/bs";
 import styled from "styled-components";
 
-
-
 export default function Habit({habit, handleClick}) {
     const { name, currentSequence, highestSequence, done } = habit;
     return (
-        <TodayHabitContainer done={done} currentSequence={currentSequence} highestSequence={highestSequence} >
-            <h1>{name}</h1>
-            <p>Sequência atual: <span className="current-sequence">{currentSequence} dias</span></p>
-            <p>Seu recorde: <span className="highest-sequence">{highestSequence} dias</span></p>
-            <BsCheckSquareFill className="check" onClick={handleClick} />
+        <TodayHabitContainer data-test="today-habit-container" done={done} currentSequence={currentSequence} highestSequence={highestSequence} >
+            <h1 data-test="today-habit-name" >{name}</h1>
+            <p data-test="today-habit-sequence" >Sequência atual: <span className="current-sequence">{currentSequence} dias</span></p>
+            <p data-test="today-habit-record" >Seu recorde: <span className="highest-sequence">{highestSequence} dias</span></p>
+            <BsCheckSquareFill data-test="today-habit-check-btn" className="check" onClick={handleClick} />
         </TodayHabitContainer>   
     )
 }
@@ -53,11 +51,7 @@ const TodayHabitContainer = styled.div`
         }
 
         .highest-sequence {
-            color: ${(props) =>
-                props.highestSequence !== 0 &&
-                props.currentSequence >= props.highestSequence
-                    ? '#8FC549'
-                    : '#666666'};
+            color: ${(props) => props.highestSequence !== 0 && props.currentSequence >= props.highestSequence? '#8FC549' : '#666666'};
         }
     }
 
@@ -67,10 +61,12 @@ const TodayHabitContainer = styled.div`
         top: 0;
         right: 0;
         margin: 13px 13px 0 0;
-
         cursor: pointer;
-        fill: ${(props) => props.done ? "#8FC549" : '#E7E7E7'}
+        transition: all 200ms;
+        fill: ${(props) => props.done ? "#8FC549" : '#E7E7E7'};
+
+        &:hover{
+            fill: ${(props) => props.done ? "#6b9633" : '#9ba88bf4'}
+        }
     }
 `;
-
-export { TodayHabitContainer };

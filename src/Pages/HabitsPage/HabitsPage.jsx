@@ -94,25 +94,25 @@ export default function HabitsPage()
        <HabitsContainer>
             <Header creating = {isCreating.toString()}>
                 <h1>Meus Hábitos</h1>
-                {!isCreating && <BsPlusSquareFill className="add-habit-btn" onClick={()=>setisCreating(true)}/>}
-                {isCreating && <BsDashSquareFill className="add-habit-btn" onClick={()=>setisCreating(false)}/>}
+                {!isCreating && <BsPlusSquareFill  data-test="habit-create-btn" className="add-habit-btn" onClick={()=>setisCreating(true)}/>}
+                {isCreating && <BsDashSquareFill  data-test="habit-create-btn" className="add-habit-btn" onClick={()=>setisCreating(false)}/>}
             </Header>
 
             {isCreating && 
-                <HabitForm onSubmit={(e) => saveHabit(e)}>
-                    <input disabled = {sendingHabit} pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e)=> setHabit({...habit, name: e.target.value})}/>
+                <HabitForm data-test="habit-create-container" onSubmit={(e) => saveHabit(e)}>
+                    <input data-test="habit-name-input" disabled = {sendingHabit} pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e)=> setHabit({...habit, name: e.target.value})}/>
                     <DaysContainer>
                     {daysOfWeek.map((day,index) => {
                         return (
-                        <DayContainer key={index} id={index} days={habit.days} onClick={()=>selectionDays(index)}>
+                        <DayContainer data-test="habit-day" key={index} id={index} days={habit.days} onClick={()=>selectionDays(index)}>
                             <p>{day}</p>
                         </DayContainer>
                     );
                     })}
                     </DaysContainer>
                     <div className="action-btns">
-                        <p onClick={()=> endCreation()}>Cancelar</p>
-                        <button disabled={sendingHabit} type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar") }</button>
+                        <p data-test="habit-create-cancel-btn" onClick={()=> endCreation()}>Cancelar</p>
+                        <button data-test="habit-create-save-btn" disabled={sendingHabit} type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar") }</button>
                     </div>
                 </HabitForm>
             }
@@ -126,16 +126,16 @@ export default function HabitsPage()
             {habits &&  habits.length > 0 && habits.map((hbt)=>{
 
                         return(
-                            <HabitContainer className="habit" key={hbt.id}>
-                                <p className="habit-name">{hbt.name}</p>
+                            <HabitContainer data-test="habit-container" className="habit" key={hbt.id}>
+                                <p data-test="habit-name" className="habit-name">{hbt.name}</p>
                                 <DaysContainerHabit >
                                     {daysOfWeek.map((day, index) => { return (
-                                        <DayContainerHabit className="day-container" key={index} id={index} days={hbt.days}>
+                                        <DayContainerHabit data-test="habit-day" className="day-container" key={index} id={index} days={hbt.days}>
                                             <p className="day-name">{day}</p>
                                         </DayContainerHabit>)
                                     })}
                                 </DaysContainerHabit>
-                                <BsTrash className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
+                                <BsTrash data-test="habit-delete-btn" className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
                             </HabitContainer>
                         );
                         })}

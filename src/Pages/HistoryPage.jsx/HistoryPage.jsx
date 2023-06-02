@@ -6,6 +6,7 @@ import styled from "styled-components";
 import 'react-calendar/dist/Calendar.css';
 import { GetHistoryHabits } from "../../requests";
 import LoadingBlocks from "../../Components/LoadingBlocks";
+import { useNavigate } from "react-router-dom";
 
 export default function HistoryPage()
 {
@@ -13,6 +14,7 @@ export default function HistoryPage()
     const [calendar, setCalendar] = useState(new Date());
     const today = new Date();
     const [historyDays , setHistoryDays] = useState(null);
+    const navigate = useNavigate();
 
     const dateOptions = {
         year: 'numeric',
@@ -34,8 +36,14 @@ export default function HistoryPage()
        
     },[]);
 
-    function updateHistoryHabits(resp)
+    function updateHistoryHabits(resp,hasError)
     {
+        if(hasError)
+        {
+            navigate('/error',{state:`${resp.request.statusText},${resp.request.status}`});
+            return;
+        }
+        
         setHistoryDays(resp);
     }
 
@@ -84,6 +92,7 @@ export default function HistoryPage()
             <Calendar 
                 className='react-calendar'
                 calendarType={'US'}
+                data-test="calendar"
                 maxDate={today}
                 onChange={setCalendar} 
                 value={calendar} 
@@ -142,6 +151,16 @@ const HistoryPageContainer = styled.div`
             align-items: center;
             text-align: center;
             transition: all 200ms;
+
+            abbr{
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
             
 
             &:last-child {
@@ -154,7 +173,7 @@ const HistoryPageContainer = styled.div`
             &--all-done {
                 abbr {
                     background: #8fc549;
-                    color: #000;
+                    color: #ffffff;
                     border-radius: 50%;
                     width: 40px;
                     height: 40px;
@@ -162,6 +181,20 @@ const HistoryPageContainer = styled.div`
                     justify-content: center;
                     align-items: center;
                     text-align: center;
+                }
+            }
+
+            &--now {
+                background: white;
+                abbr{
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    background: #ffff76;
                 }
             }
 
@@ -181,7 +214,17 @@ const HistoryPageContainer = styled.div`
 
             &:hover
             {
-                background-color: #e2e2e2;
+                background-color: white;
+            }
+
+            &:disabled{
+                &:hover{
+                    background-color: #f0f0f0;
+
+                    abbr{
+                        background-color: #f0f0f0;
+                    }
+                }
             }
 
             &--active {

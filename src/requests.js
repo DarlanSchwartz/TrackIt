@@ -117,8 +117,8 @@ const URL_HISTORY_HABITS = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/t
 export function GetHistoryHabits(header,callback)
 {
     axios.get(URL_HISTORY_HABITS, header)
-    .then( (resp) => callback(resp.data))
-    .catch((error) => callback(error));
+    .then( (resp) => callback(resp.data,false))
+    .catch((error) => callback(error ,true));
 }
 
 
