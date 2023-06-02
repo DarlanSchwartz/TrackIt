@@ -1,7 +1,7 @@
 import { BsCheckSquareFill } from "react-icons/bs";
 import styled from "styled-components";
 
-export default function Habit({habit, handleClick}) {
+export default function Habit({ habit, handleClick }) {
     const { name, currentSequence, highestSequence, done } = habit;
     return (
         <TodayHabitContainer data-test="today-habit-container" done={done} currentSequence={currentSequence} highestSequence={highestSequence} >
@@ -9,7 +9,7 @@ export default function Habit({habit, handleClick}) {
             <p data-test="today-habit-sequence" >Sequência atual: <span className="current-sequence">{currentSequence} dias</span></p>
             <p data-test="today-habit-record" >Seu recorde: <span className="highest-sequence">{highestSequence} dias</span></p>
             <BsCheckSquareFill data-test="today-habit-check-btn" className="check" onClick={handleClick} />
-        </TodayHabitContainer>   
+        </TodayHabitContainer>
     )
 }
 
@@ -51,7 +51,7 @@ const TodayHabitContainer = styled.div`
         }
 
         .highest-sequence {
-            color: ${(props) => props.highestSequence !== 0 && props.currentSequence >= props.highestSequence? '#8FC549' : '#666666'};
+            color: ${(props) => props.highestSequence !== 0 && props.currentSequence >= props.highestSequence ? '#8FC549' : '#666666'};
         }
     }
 

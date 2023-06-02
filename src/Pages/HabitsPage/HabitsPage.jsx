@@ -3,33 +3,30 @@ import { BsDashSquareFill, BsPlusSquareFill } from "react-icons/bs";
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import { useContext } from "react";
-import { GetAllHabits ,DeleteHabit } from "../../requests";
-import {ThreeDots } from "react-loader-spinner";
+import { GetAllHabits, DeleteHabit } from "../../requests";
+import { ThreeDots } from "react-loader-spinner";
 import { SaveHabit } from "../../requests";
 import { BsTrash } from "react-icons/bs";
 import LoadingBlocks from "../../Components/LoadingBlocks";
 
-export default function HabitsPage()
-{
-    const [isCreating,setisCreating] = useState(false);
+export default function HabitsPage() {
+    const [isCreating, setisCreating] = useState(false);
     const [sendingHabit, setSendingHabit] = useState(false);
     const [habits, setHabits] = useState();
-    const { user ,setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const daysOfWeek = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
-    const [habit, setHabit] = useState({name:"", days:[]});
+    const [habit, setHabit] = useState({ name: "", days: [] });
 
-    useEffect(()=>
-    {
-        if(localStorage.getItem('user-trackit'))
-        {
+    useEffect(() => {
+        if (localStorage.getItem('user-trackit')) {
             const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
             setUser(lsUser);
-            GetAllHabits({headers: {Authorization: `Bearer ${lsUser.token}` }},updateHabits);
+            GetAllHabits({ headers: { Authorization: `Bearer ${lsUser.token}` } }, updateHabits);
             return;
         }
-       
-        GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
-    },[]);
+
+        GetAllHabits({ headers: { Authorization: `Bearer ${user.token}` } }, updateHabits);
+    }, []);
 
     function selectionDays(day) {
         if (habit.days.includes(day)) {
@@ -37,32 +34,27 @@ export default function HabitsPage()
         } else {
             setHabit({ ...habit, days: [...habit.days, day] });
         }
-    };
+    }
 
-    function endCreation(response,error,update)
-    {
+    function endCreation(response, error, update) {
         setisCreating(false);
         setSendingHabit(false);
-        setHabit({name:"", days:[]});
+        setHabit({ name: "", days: [] });
 
-        if(update === true)
-        {
-            GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
+        if (update === true) {
+            GetAllHabits({ headers: { Authorization: `Bearer ${user.token}` } }, updateHabits);
         }
     }
 
 
-    function saveHabit(event)
-    {
+    function saveHabit(event) {
         setSendingHabit(true);
         event.preventDefault();
-        SaveHabit(habit,{headers: {Authorization: `Bearer ${user.token}` }},(resp,isError)=> endCreation(resp,isError,true));
+        SaveHabit(habit, { headers: { Authorization: `Bearer ${user.token}` } }, (resp, isError) => endCreation(resp, isError, true));
     }
 
-    function updateHabits(responseHabits,error)
-    {
-        if(error)
-        {
+    function updateHabits(responseHabits, error) {
+        if (error) {
             alert(error.message);
             return;
         }
@@ -70,78 +62,76 @@ export default function HabitsPage()
         setHabits(responseHabits);
     }
 
-    function deleteHabit(id)
-    {
+    function deleteHabit(id) {
         if (window.confirm('Deseja realmente excluir esse hábito?')) {
-            DeleteHabit(id,{headers: {Authorization: `Bearer ${user.token}` }},deleteSuceeced);
+            DeleteHabit(id, { headers: { Authorization: `Bearer ${user.token}` } }, deleteSuceeced);
         }
 
     }
 
-    function deleteSuceeced(resp,error)
-    {
-        if(error)
-        {
+    function deleteSuceeced(resp, error) {
+        if (error) {
             alert(error);
             return;
         }
 
-        GetAllHabits({headers: {Authorization: `Bearer ${user.token}` }},updateHabits);
+        GetAllHabits({ headers: { Authorization: `Bearer ${user.token}` } }, updateHabits);
     }
-    
-    
+
+
     return (
-       <HabitsContainer>
-            <Header creating = {isCreating.toString()}>
+        <HabitsContainer>
+            <Header creating={isCreating.toString()}>
                 <h1>Meus Hábitos</h1>
-                {!isCreating && <BsPlusSquareFill  data-test="habit-create-btn" className="add-habit-btn" onClick={()=>setisCreating(true)}/>}
-                {isCreating && <BsDashSquareFill  data-test="habit-create-btn" className="add-habit-btn" onClick={()=>setisCreating(false)}/>}
+                {!isCreating && <BsPlusSquareFill data-test="habit-create-btn" className="add-habit-btn" onClick={() => setisCreating(true)} />}
+                {isCreating && <BsDashSquareFill data-test="habit-create-btn" className="add-habit-btn" onClick={() => setisCreating(false)} />}
             </Header>
 
-            {isCreating && 
+            {isCreating &&
                 <HabitForm data-test="habit-create-container" onSubmit={(e) => saveHabit(e)}>
-                    <input data-test="habit-name-input" disabled = {sendingHabit} pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e)=> setHabit({...habit, name: e.target.value})}/>
+                    <input data-test="habit-name-input" disabled={sendingHabit} pattern="^(?!\s*$).+" required type="text" placeholder="nome do hábito" name="habit" id="habit" value={habit.name} onChange={(e) => setHabit({ ...habit, name: e.target.value })} />
                     <DaysContainer>
-                    {daysOfWeek.map((day,index) => {
-                        return (
-                        <DayContainer data-test="habit-day" key={index} id={index} days={habit.days} onClick={()=>selectionDays(index)}>
-                            <p>{day}</p>
-                        </DayContainer>
-                    );
-                    })}
+                        {daysOfWeek.map((day, index) => {
+                            return (
+                                <DayContainer data-test="habit-day" key={index} id={index} days={habit.days} onClick={() => selectionDays(index)}>
+                                    <p>{day}</p>
+                                </DayContainer>
+                            );
+                        })}
                     </DaysContainer>
                     <div className="action-btns">
-                        <p data-test="habit-create-cancel-btn" onClick={()=> endCreation()}>Cancelar</p>
-                        <button data-test="habit-create-save-btn" disabled={sendingHabit} type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar") }</button>
+                        <p data-test="habit-create-cancel-btn" onClick={() => endCreation()}>Cancelar</p>
+                        <button data-test="habit-create-save-btn" disabled={sendingHabit} type="submit">{sendingHabit ? (<ThreeDots color="#fff" height={11} />) : ("Salvar")}</button>
                     </div>
                 </HabitForm>
             }
 
-            {(habits && habits.length == 0 && sendingHabit == false) && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
+            {(habits && habits.length == 0 && sendingHabit === false) && <p className="no-habits-message"> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
 
-            {!habits && <LoadingBlocks/>}
+            {!habits && <LoadingBlocks />}
 
 
-            <MyHabits creating = {isCreating.toString()}>
-            {habits &&  habits.length > 0 && habits.map((hbt)=>{
+            <MyHabits creating={isCreating.toString()}>
+                {habits && habits.length > 0 && habits.map((hbt) => {
 
-                        return(
-                            <HabitContainer data-test="habit-container" className="habit" key={hbt.id}>
-                                <p data-test="habit-name" className="habit-name">{hbt.name}</p>
-                                <DaysContainerHabit >
-                                    {daysOfWeek.map((day, index) => { return (
+                    return (
+                        <HabitContainer data-test="habit-container" className="habit" key={hbt.id}>
+                            <p data-test="habit-name" className="habit-name">{hbt.name}</p>
+                            <DaysContainerHabit >
+                                {daysOfWeek.map((day, index) => {
+                                    return (
                                         <DayContainerHabit data-test="habit-day" className="day-container" key={index} id={index} days={hbt.days}>
                                             <p className="day-name">{day}</p>
                                         </DayContainerHabit>)
-                                    })}
-                                </DaysContainerHabit>
-                                <BsTrash data-test="habit-delete-btn" className="trash-icon" onClick={() => deleteHabit(hbt.id)}/>
-                            </HabitContainer>
-                        );
-                        })}
+                                })}
+                            </DaysContainerHabit>
+                            <BsTrash data-test="habit-delete-btn" className="trash-icon" onClick={() => deleteHabit(hbt.id)} />
+                        </HabitContainer>
+                    );
+                })}
             </MyHabits>
 
-       </HabitsContainer>
+        </HabitsContainer>
     );
 }
 
@@ -234,7 +224,7 @@ const HabitForm = styled.form`
 
 `;
 
-const DaysContainer= styled.div`
+const DaysContainer = styled.div`
     display: flex;
     margin: 8px 0 29px 19px;
    
@@ -259,14 +249,14 @@ const DayContainerHabit = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 5px;
-    background: ${({id, days }) => days.includes(id) ? "rgba(207, 207, 207, 1)" : "rgba(255, 255, 255, 1)"};
+    background: ${({ id, days }) => days.includes(id) ? "rgba(207, 207, 207, 1)" : "rgba(255, 255, 255, 1)"};
     border: 1px solid #D5D5D5;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     .day-name{
-        color: ${({id, days }) => days.includes(id) ? "#ffffff" : "#DBDBDB" };
+        color: ${({ id, days }) => days.includes(id) ? "#ffffff" : "#DBDBDB"};
     }
     
     margin-bottom: 10px;
@@ -299,18 +289,18 @@ const Header = styled.div`
         position: fixed;
         right: 20px;
         top: 94px;
-        color: ${(props) => props.creating  == 'true' ? 'red' :'#52B6FF'}; 
+        color: ${(props) => props.creating === 'true' ? 'red' : '#52B6FF'}; 
         cursor: pointer;
         transition: all 200ms;
         &:hover{
-            color:${(props) => props.creating == 'true' ? '#8d2a2f' : '#2a648d'};
+            color:${(props) => props.creating === 'true' ? '#8d2a2f' : '#2a648d'};
         }
     }
 `;
 
 const MyHabits = styled.div`
 
-    margin-top: ${(props) => props.creating == 'true' ? 0 : '30px'};
+    margin-top: ${(props) => props.creating === 'true' ? 0 : '30px'};
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -357,14 +347,14 @@ const DayContainer = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 5px;
-    background: ${({id, days }) => days.includes(id) ? "rgba(207, 207, 207, 1)" : "rgba(255, 255, 255, 1)"};
+    background: ${({ id, days }) => days.includes(id) ? "rgba(207, 207, 207, 1)" : "rgba(255, 255, 255, 1)"};
     border: 1px solid #D5D5D5;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     transition: all 200ms;
-    color: ${({id, days }) => days.includes(id) ? "#FFFFFF" : "#DBDBDB" };
+    color: ${({ id, days }) => days.includes(id) ? "#FFFFFF" : "#DBDBDB"};
     cursor: pointer;
 
     &:hover

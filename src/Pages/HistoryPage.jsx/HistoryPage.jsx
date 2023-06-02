@@ -8,12 +8,11 @@ import { GetHistoryHabits } from "../../requests";
 import LoadingBlocks from "../../Components/LoadingBlocks";
 import { useNavigate } from "react-router-dom";
 
-export default function HistoryPage()
-{
-    const { user ,setUser } = useContext(UserContext);
+export default function HistoryPage() {
+    const { user, setUser } = useContext(UserContext);
     const [calendar, setCalendar] = useState(new Date());
     const today = new Date();
-    const [historyDays , setHistoryDays] = useState(null);
+    const [historyDays, setHistoryDays] = useState(null);
     const navigate = useNavigate();
 
     const dateOptions = {
@@ -22,82 +21,73 @@ export default function HistoryPage()
         day: 'numeric',
     };
 
-    useEffect(()=>
-    {
-        if(localStorage.getItem('user-trackit'))
-        {
+    useEffect(() => {
+        if (localStorage.getItem('user-trackit')) {
             const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
             setUser(lsUser);
-            GetHistoryHabits({headers: {Authorization: `Bearer ${lsUser.token}`}},updateHistoryHabits);
+            GetHistoryHabits({ headers: { Authorization: `Bearer ${lsUser.token}` } }, updateHistoryHabits);
             return;
         }
 
-        GetHistoryHabits({headers: {Authorization: `Bearer ${user.token}`}},updateHistoryHabits);
-       
-    },[]);
+        GetHistoryHabits({ headers: { Authorization: `Bearer ${user.token}` } }, updateHistoryHabits);
 
-    function updateHistoryHabits(resp,hasError)
-    {
-        if(hasError)
-        {
-            navigate('/error',{state:`${resp.request.statusText},${resp.request.status}`});
+    }, []);
+
+    function updateHistoryHabits(resp, hasError) {
+        if (hasError) {
+            navigate('/error', { state: `${resp.request.statusText},${resp.request.status}` });
             return;
         }
-        
+
         setHistoryDays(resp);
     }
 
-    function tileClassName({ date, view }) 
-    {
-        if(view != 'month' || historyDays == null)
-        {
+    function tileClassName({ date, view }) {
+        if (view != 'month' || historyDays == null) {
             return 'react-calendar__tile';
         }
-        
+
         let doneDays = [];
-        
-        historyDays.filter((day) =>  day.habits.every((habit) => habit.done)).map(fdate => doneDays.push(fdate.day));
-        
+
+        historyDays.filter((day) => day.habits.every((habit) => habit.done)).map(fdate => doneDays.push(fdate.day));
+
         let notDoneDays = [];
 
-        historyDays.filter((day) =>  !day.habits.every((habit) => habit.done)).map(fdate => notDoneDays.push(fdate.day));
+        historyDays.filter((day) => !day.habits.every((habit) => habit.done)).map(fdate => notDoneDays.push(fdate.day));
 
-        if(doneDays.includes(date.toLocaleDateString('pt-br', dateOptions)))
-        {
+        if (doneDays.includes(date.toLocaleDateString('pt-br', dateOptions))) {
             return 'react-calendar__tile--all-done';
         }
-        else if(notDoneDays.includes(date.toLocaleDateString('pt-br', dateOptions)))
-        {
+        else if (notDoneDays.includes(date.toLocaleDateString('pt-br', dateOptions))) {
             return 'react-calendar__tile--not-all-done';
         }
-        else
-        {
+        else {
             return 'react-calendar__tile';
         }
     }
-    
+
     return (
         <HistoryPageContainer>
-             <div className="header">
+            <div className="header">
                 <h1>Histórico</h1>
                 {historyDays && historyDays.length == 0 && <p className="no-historic">Nada para mostrar aqui</p>}
-                {!historyDays &&  <p className="no-historic">Carregando...</p>}
+                {!historyDays && <p className="no-historic">Carregando...</p>}
             </div>
-        
-            {!historyDays && <LoadingBlocks/>}
-            
 
-            {historyDays &&  historyDays.length > 0 && 
-            
-            <Calendar 
-                className='react-calendar'
-                calendarType={'US'}
-                data-test="calendar"
-                maxDate={today}
-                onChange={setCalendar} 
-                value={calendar} 
-                tileClassName={tileClassName}    
-            />}
+            {!historyDays && <LoadingBlocks />}
+
+
+            {historyDays && historyDays.length > 0 &&
+
+                <Calendar
+                    className='react-calendar'
+                    calendarType={'US'}
+                    data-test="calendar"
+                    maxDate={today}
+                    onChange={setCalendar}
+                    value={calendar}
+                    tileClassName={tileClassName}
+                />}
         </HistoryPageContainer>
     );
 }

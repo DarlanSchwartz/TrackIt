@@ -20,7 +20,6 @@ export default function Footer() {
                     text={'Hoje'}
                     background={true}
                     backgroundPadding={6}
-                    
                     styles={{
                         path: {
                             stroke: `#fff`,

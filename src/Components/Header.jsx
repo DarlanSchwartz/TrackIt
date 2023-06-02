@@ -1,23 +1,22 @@
 import UserContext from "../contexts/UserContext";
-import {useContext, useState} from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Header()
-{
-    const {user} = useContext(UserContext);
-    const [showDropdown,setShowDropdown] = useState(false);
+export default function Header() {
+    const { user } = useContext(UserContext);
+    const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
 
     return (
-       <HeaderSC data-test="header" >
-        <HeaderApp>
+        <HeaderSC data-test="header" >
+            <HeaderApp>
                 <span onClick={() => navigate('/hoje')}>TrackIt</span>
-                <img onClick={()=> setShowDropdown(!showDropdown)} src={user.image} alt="profile" data-test="avatar" />
-        </HeaderApp>
+                <img onClick={() => setShowDropdown(!showDropdown)} src={user.image} alt="profile" data-test="avatar" />
+            </HeaderApp>
 
-        {showDropdown && <button onClick={()=> { localStorage.removeItem('user-trackit'); navigate('/');}} className="logout-btn">Sair</button>}
-       </HeaderSC>
+            {showDropdown && <button onClick={() => { localStorage.removeItem('user-trackit'); navigate('/'); }} className="logout-btn">Sair</button>}
+        </HeaderSC>
     );
 }
 
@@ -42,7 +41,6 @@ button{
         background-color: white;
     }
 }
-
 `;
 
 const HeaderApp = styled.div`
@@ -76,4 +74,4 @@ const HeaderApp = styled.div`
         color: #FFFFFF;
         cursor: pointer;
     }
-`
+`;

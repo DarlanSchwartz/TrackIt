@@ -3,23 +3,21 @@ import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function ErrorPage(error)
-{
-    const {setUser} = useContext(UserContext);
+export default function ErrorPage(error) {
+    const { setUser } = useContext(UserContext);
     const state = useLocation().state;
-    useEffect(()=>{
-        if(localStorage.getItem('user-trackit'))
-        {
+    useEffect(() => {
+        if (localStorage.getItem('user-trackit')) {
             const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
             setUser(lsUser);
         }
-    },[state]);
-    
-    
+    }, [state]);
+
+
     return (
         <PageContainer>
-            {error.generic == 'true' &&<div className="error-container"> <p className="error-name">Erro 404</p><p className="error-description">Página não encontrada</p></div>}
-            {error.generic == 'false' &&<div className="error-container"> <p className="error-name">Erro {state.split(',')[1]}</p><p className="error-description">{state.split(',')[0]}</p></div>}
+            {error.generic == 'true' && <div className="error-container"> <p className="error-name">Erro 404</p><p className="error-description">Página não encontrada</p></div>}
+            {error.generic == 'false' && <div className="error-container"> <p className="error-name">Erro {state.split(',')[1]}</p><p className="error-description">{state.split(',')[0]}</p></div>}
         </PageContainer>
     );
 }
@@ -58,6 +56,4 @@ width: 100%;
         color: #949494;
         text-align: center;
     }
-
-
 `;

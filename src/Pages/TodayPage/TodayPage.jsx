@@ -1,86 +1,77 @@
 import dayjs from "dayjs";
-import 'dayjs/locale/pt-br'; 
+import 'dayjs/locale/pt-br';
 
 import { useContext, useEffect, useState } from "react";
 
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
-import { GetTodayHabits,SetHabitChecked } from "../../requests";
+import { GetTodayHabits, SetHabitChecked } from "../../requests";
 import Habit from "./Habit";
 import LoadingBlocks from "../../Components/LoadingBlocks";
 import { useNavigate } from "react-router-dom";
 
 
 
-export default function TodayPage()
-{
-    const {user,setUser, completedHabits, setCompletedHabits} = useContext(UserContext);
+export default function TodayPage() {
+    const { user, setUser, completedHabits, setCompletedHabits } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState(null);
     const navigate = useNavigate();
-    
 
-    function UpdateHabits(habistArr,error)
-    {
-        if(error === true)
-        {
+
+    function UpdateHabits(habistArr, error) {
+        if (error === true) {
             navigate('/error');
             return;
         }
-        
+
         setTodayHabits(habistArr);
         setCompletedHabits((habistArr.filter((habit) => habit.done).length / habistArr.length) * 100);
     }
 
-    function toggle(id)
-    {
-        todayHabits.find((habit) => habit.id === id).done ? uncheckHabit(id): checkHabit(id);
+    function toggle(id) {
+        todayHabits.find((habit) => habit.id === id).done ? uncheckHabit(id) : checkHabit(id);
     }
 
-    useEffect(()=>
-    {
-        if(localStorage.getItem('user-trackit'))
-        {
+    useEffect(() => {
+        if (localStorage.getItem('user-trackit')) {
             const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
             setUser(lsUser);
-            GetTodayHabits({headers: {Authorization: `Bearer ${lsUser.token}`}},UpdateHabits);
+            GetTodayHabits({ headers: { Authorization: `Bearer ${lsUser.token}` } }, UpdateHabits);
             return;
         }
 
-        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}` }},UpdateHabits);
-        
-    },[]);
+        GetTodayHabits({ headers: { Authorization: `Bearer ${user.token}` } }, UpdateHabits);
 
-    function checkHabit(id) 
-    {
-        SetHabitChecked(id,true,{headers: {Authorization: `Bearer ${user.token}`}},checkEnded);
+    }, []);
+
+    function checkHabit(id) {
+        SetHabitChecked(id, true, { headers: { Authorization: `Bearer ${user.token}` } }, checkEnded);
     }
 
-    function uncheckHabit(id)
-    {
-        SetHabitChecked(id,false,{headers: {Authorization: `Bearer ${user.token}`}},checkEnded );
+    function uncheckHabit(id) {
+        SetHabitChecked(id, false, { headers: { Authorization: `Bearer ${user.token}` } }, checkEnded);
     }
 
-    function checkEnded(resp)
-    {
-        GetTodayHabits({headers: {Authorization: `Bearer ${user.token}`}},UpdateHabits)
+    function checkEnded(resp) {
+        GetTodayHabits({ headers: { Authorization: `Bearer ${user.token}` } }, UpdateHabits)
     }
 
-    
 
-    return(
-        <TodayContainer amount = {completedHabits.toFixed()}>
-        <div className="header">
-            <h1 data-test="today" >{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
-            { todayHabits !=null && todayHabits.length > 0 && completedHabits > 0 && <p data-test="today-counter"  className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
-            { todayHabits !=null && todayHabits.length > 0 && completedHabits === 0 && <p data-test="today-counter" className="habits-done"> Nenhum hábito concluído ainda</p>}
-        </div>
-        <div className="today-habits">
-            { todayHabits !=null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
-            { todayHabits ==null && <div className="text-no-habits"><p>Carregando...</p></div>}
-            { todayHabits ===null && <LoadingBlocks/>}
-            { todayHabits !=null && todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
-        </div>    
-    </TodayContainer>
+
+    return (
+        <TodayContainer amount={completedHabits.toFixed()}>
+            <div className="header">
+                <h1 data-test="today" >{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
+                {todayHabits != null && todayHabits.length > 0 && completedHabits > 0 && <p data-test="today-counter" className="habits-done">{completedHabits.toFixed()}% dos hábitos concluídos</p>}
+                {todayHabits != null && todayHabits.length > 0 && completedHabits === 0 && <p data-test="today-counter" className="habits-done"> Nenhum hábito concluído ainda</p>}
+            </div>
+            <div className="today-habits">
+                {todayHabits != null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
+                {todayHabits == null && <div className="text-no-habits"><p>Carregando...</p></div>}
+                {todayHabits === null && <LoadingBlocks />}
+                {todayHabits != null && todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
+            </div>
+        </TodayContainer>
     );
 }
 

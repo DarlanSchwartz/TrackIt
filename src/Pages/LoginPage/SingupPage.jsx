@@ -1,30 +1,27 @@
 import styled from "styled-components";
 import logo from '../../assets/track-it-logo.svg'
 import { Link, useNavigate } from "react-router-dom";
-import {Singup} from '../../requests.js';
+import { Singup } from '../../requests.js';
 import { useState } from "react";
 
 export default function SingupPage() {
 
     const navigate = useNavigate();
 
-    const [loginIn,setLoginIn] = useState(false);
-    const [userEmail,setUserEmail] = useState('');
-    const [userPassword,setUserPassword] = useState('');
-    const [userName,setUserName] = useState('');
-    const [userImage,setUserImage] = useState('');
+    const [loginIn, setLoginIn] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userImage, setUserImage] = useState('');
 
-    function SingupSucess(response,error)
-    {
+    function SingupSucess(response, error) {
         setLoginIn(false);
-        
-        if(error == true)
-        {
-            if(response.response.status == 422)
-            {
+
+        if (error == true) {
+            if (response.response.status == 422) {
                 alert('Informações de login incorretas');
             }
-           
+
             return;
         }
 
@@ -37,23 +34,24 @@ export default function SingupPage() {
             <img src={logo} />
 
             <SingupForm onSubmit={
-                    (e)=> {
+                (e) => {
                     e.preventDefault();
                     setLoginIn(true);
                     Singup(
-                    {
-                        email: userEmail,
-                        name: userName,
-                        image: userImage,
-                        password: userPassword
-                    }
-                    ,SingupSucess)}}>
+                        {
+                            email: userEmail,
+                            name: userName,
+                            image: userImage,
+                            password: userPassword
+                        }
+                        , SingupSucess)
+                }}>
 
-                <input data-test="email-input" disabled = {loginIn} required  type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
-                <input data-test="password-input" disabled = {loginIn} required pattern="^(?!\s*$).+" type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
-                <input data-test="user-name-input" disabled = {loginIn} required pattern="^(?!\s*$).+" type="text" placeholder="nome" name="nome" id="nome" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                <input data-test="user-image-input" disabled = {loginIn} required pattern="^(https?:\/\/)?(www\.)?([^/\n]+\/)*[^/\n]+\.(jpg|jpeg|png|gif|bmp|webp)$" type="url" placeholder="foto" name="foto" id="foto" value={userImage} onChange={(e) => setUserImage(e.target.value)} />
-                <button data-test="signup-btn" disabled  = {loginIn}>{loginIn ? '...' : 'Cadastrar'}</button>
+                <input data-test="email-input" disabled={loginIn} required type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+                <input data-test="password-input" disabled={loginIn} required pattern="^(?!\s*$).+" type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                <input data-test="user-name-input" disabled={loginIn} required pattern="^(?!\s*$).+" type="text" placeholder="nome" name="nome" id="nome" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                <input data-test="user-image-input" disabled={loginIn} required pattern="^(https?:\/\/)?(www\.)?([^/\n]+\/)*[^/\n]+\.(jpg|jpeg|png|gif|bmp|webp)$" type="url" placeholder="foto" name="foto" id="foto" value={userImage} onChange={(e) => setUserImage(e.target.value)} />
+                <button data-test="signup-btn" disabled={loginIn}>{loginIn ? '...' : 'Cadastrar'}</button>
 
             </SingupForm>
 
