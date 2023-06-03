@@ -1,14 +1,42 @@
+import { useEffect, useState } from "react";
 import { BsCheckSquareFill } from "react-icons/bs";
 import styled from "styled-components";
+import loadingGif from '../../assets/loading.gif';
 
-export default function Habit({ habit, handleClick }) {
+export default function Habit({ habit, handleClick,loading }) {
     const { name, currentSequence, highestSequence, done } = habit;
+    const [changing,setChanging] = useState(false);
+
+
+    function click()
+    {
+        if(changing || loading == 'true')
+        {
+            return;
+        }
+        
+        handleClick();
+        setChanging(true);
+    }
+
+    useEffect( ()=>{
+        
+        if(changing && loading == 'false')
+        {
+            setChanging(false);
+        }
+
+    },[loading])
+
+
+
     return (
         <TodayHabitContainer data-test="today-habit-container" done={done} currentSequence={currentSequence} highestSequence={highestSequence} >
             <h1 data-test="today-habit-name" >{name}</h1>
             <p data-test="today-habit-sequence" >Sequência atual: <span className="current-sequence">{currentSequence} dias</span></p>
             <p data-test="today-habit-record" >Seu recorde: <span className="highest-sequence">{highestSequence} dias</span></p>
-            <BsCheckSquareFill data-test="today-habit-check-btn" className="check" onClick={handleClick} />
+            <BsCheckSquareFill data-test="today-habit-check-btn" className="check" onClick={click} />
+            {changing && loading == 'true' && <img className="loading-gif" src={loadingGif}/>}
         </TodayHabitContainer>
     )
 }
@@ -18,10 +46,18 @@ const TodayHabitContainer = styled.div`
     margin-left: 18px;
     margin-right: 18px;
     min-height: 94px;
-    background-color:#f7f7f7;
+    background-color:#ffffff;
     border-radius: 5px;
     position: relative;
     margin-bottom: 10px;
+
+    .loading-gif{
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 13px 0 0 0;
+        width: 100px;
+    }
 
     &:last-child {
         margin-bottom: 120px;

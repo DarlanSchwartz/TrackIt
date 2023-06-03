@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 export default function TodayPage() {
     const { user, setUser, completedHabits, setCompletedHabits } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState(null);
+    const [changingHabitState, setChangingHabitState] = useState(false);
     const navigate = useNavigate();
 
 
@@ -29,7 +30,13 @@ export default function TodayPage() {
     }
 
     function toggle(id) {
+        if(changingHabitState)
+        {
+            return;
+        }
+
         todayHabits.find((habit) => habit.id === id).done ? uncheckHabit(id) : checkHabit(id);
+        setChangingHabitState(true);
     }
 
     useEffect(() => {
@@ -53,7 +60,8 @@ export default function TodayPage() {
     }
 
     function checkEnded(resp) {
-        GetTodayHabits({ headers: { Authorization: `Bearer ${user.token}` } }, UpdateHabits)
+        GetTodayHabits({ headers: { Authorization: `Bearer ${user.token}` } }, UpdateHabits);
+        setChangingHabitState(false);
     }
 
 
@@ -66,7 +74,7 @@ export default function TodayPage() {
                 {todayHabits != null && todayHabits.length > 0 && completedHabits === 0 && <p data-test="today-counter" className="habits-done"> Nenhum hábito concluído ainda</p>}
             </div>
             <div className="today-habits">
-                {todayHabits != null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
+                {todayHabits != null && todayHabits.length > 0 && todayHabits.map((habit) => <Habit loading={changingHabitState.toString()} key={habit.id} habit={habit} handleClick={() => toggle(habit.id)} />)}
                 {todayHabits == null && <div className="text-no-habits"><p>Carregando...</p></div>}
                 {todayHabits === null && <LoadingBlocks />}
                 {todayHabits != null && todayHabits.length == 0 && <div className="text-no-habits"><p>Você não tem habitos para hoje</p></div>}
