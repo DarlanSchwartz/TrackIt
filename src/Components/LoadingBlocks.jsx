@@ -1,4 +1,4 @@
-import { Blocks } from "react-loader-spinner";
+import { Blocks } from "react-loader-spinsner";
 import styled from "styled-components";
 
 export default function LoadingBlocks() {
