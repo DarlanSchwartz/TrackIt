@@ -7,19 +7,18 @@ import 'react-calendar/dist/Calendar.css';
 import { GetHistoryHabits } from "../../requests";
 import LoadingBlocks from "../../Components/LoadingBlocks";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import { BsFillXSquareFill, BsCheckSquareFill} from "react-icons/bs";
 
 export default function HistoryPage() {
     const { user, setUser } = useContext(UserContext);
     const [calendar, setCalendar] = useState(new Date());
+    const [dateHabits, setDateHabits] = useState();
     const today = new Date();
     const [historyDays, setHistoryDays] = useState(null);
     const navigate = useNavigate();
 
-    const dateOptions = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-    };
+    const dateOptions = {year: 'numeric', month: 'numeric', day: 'numeric',};
 
     useEffect(() => {
         if (localStorage.getItem('user-trackit')) {
@@ -32,6 +31,13 @@ export default function HistoryPage() {
         GetHistoryHabits({ headers: { Authorization: `Bearer ${user.token}` } }, updateHistoryHabits);
 
     }, []);
+
+    useEffect(() => {
+        if(historyDays!=null)
+        {
+            setDateHabits(historyDays.find((habit) =>habit.day === calendar.toLocaleDateString('pt-br', dateOptions)));
+        }
+    }, [calendar]);
 
     function updateHistoryHabits(resp, hasError) {
         if (hasError) {
@@ -76,7 +82,6 @@ export default function HistoryPage() {
 
             {!historyDays && <LoadingBlocks />}
 
-
             {historyDays && historyDays.length > 0 &&
 
                 <Calendar
@@ -87,10 +92,69 @@ export default function HistoryPage() {
                     onChange={setCalendar}
                     value={calendar}
                     tileClassName={tileClassName}
+                    formatDay={(locale, date) => <p>{dayjs(date).format('DD')}</p>}
                 />}
+
+            <div className="date-habits">
+                {dateHabits &&
+                    <>
+                        <h1 className="current-day-habits">{'Hábitos do dia ' + calendar.toLocaleDateString('pt-br',dateOptions)}</h1>
+                        {dateHabits.habits.map((habit) => (
+                            <HistoryHabitContainer className="date-habit" key={habit.id} >
+                                <h1 className="name-habit">{habit.name}</h1>{habit.done ? (<BsCheckSquareFill className="check done"/>) : (<BsFillXSquareFill className="check not-done" /> )}
+                            </HistoryHabitContainer>
+                        ))}
+                    </>}
+                    {!dateHabits && <h1 className="current-day-habits">Não existem hábitos para o dia{' '}{calendar.toLocaleDateString('pt-br', dateOptions)}</h1>}
+            </div>
         </HistoryPageContainer>
     );
 }
+
+const HistoryHabitContainer = styled.div`
+
+    width: calc(100% - 36px);
+    margin-left: 18px;
+    margin-right: 18px;
+    min-height: 94px;
+    background-color:#ffffff;
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 10px;
+    align-items: center;
+    display: flex;
+
+    &:last-child {
+        margin-bottom: 120px;
+    }
+
+    h1{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        color: #666666;
+        width: calc(100% - 105px);
+        flex-wrap: wrap;
+        margin-left: 20px;
+    }
+
+    .check {
+        font-size: 69px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 13px 13px 0 0;
+    }
+
+    .check.done{
+        fill: #8FC549;
+    }
+
+    .check.not-done{
+        fill: #ff0000;
+    }
+`;
 
 const HistoryPageContainer = styled.div`
     background-color: #E5E5E5;
@@ -98,6 +162,23 @@ const HistoryPageContainer = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+
+
+    .date-habits{
+        width: 100%;
+        background-color: #E5E5E5;
+    }
+
+    .current-day-habits{
+        font-family: "Lexend Deca";
+        font-size: 20px;
+        line-height: 25px;
+        color: rgb(102, 102, 102);
+        margin-bottom: 7px;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
 
 
     .header {
@@ -125,7 +206,7 @@ const HistoryPageContainer = styled.div`
     }
 
     .react-calendar {
-        width: 90%;
+        width: calc(100% - 36px);
         border: none;
         border-radius: 10px;
         margin-top: 138px;
