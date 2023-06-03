@@ -2,11 +2,26 @@ import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { IoExitOutline } from "react-icons/io5";
+
+
 
 export default function Header() {
     const { user } = useContext(UserContext);
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
+
+    function logout(event)
+    {
+        if(showDropdown === false)
+        {
+            return;
+        }
+        
+        event.stopPropagation();
+        localStorage.removeItem('user-trackit'); 
+        navigate('/'); 
+    }
 
     return (
         <HeaderSC data-test="header" >
@@ -14,33 +29,78 @@ export default function Header() {
                 <span onClick={() => navigate('/hoje')}>TrackIt</span>
                 <img onClick={() => setShowDropdown(!showDropdown)} src={user.image} alt="profile" data-test="avatar" />
             </HeaderApp>
-
-            {showDropdown && <button onClick={() => { localStorage.removeItem('user-trackit'); navigate('/'); }} className="logout-btn">Sair</button>}
+            <Dropdown className={showDropdown ? 'open' : ''}>
+                <p className="dp-user-name" >{user.name}</p>
+                <button onClick={(e) => logout(e)} className="logout-btn">
+                    <IoExitOutline className="logout-icon" />
+                    Sair
+                </button>
+            </Dropdown>
         </HeaderSC>
     );
 }
 
+const Dropdown = styled.div`
+    width: 130px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    position: fixed;
+    right:10px;
+    top: -100px ;
+    z-index: 5;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 200ms;
+    font-family: 'Lexend Deca';
+
+    .dp-user-name
+    {
+        width: 60px;
+        height: 25px;
+        color: #126BA5;
+        text-align: center;
+        font-size: 20px;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    &.open{
+        top: 65px;
+    }
+
+    button
+    {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: white;
+        border: 0;
+        color: #126BA5;
+        width: 60px;
+        height: 25px;
+        cursor: pointer;
+        transition: all 200ms;
+        width: 100%;
+        font-size: 20px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        .logout-icon{
+            transform: scale(-100%);
+        }
+
+        &:hover{
+            background-color: #dadada;
+        }
+    }
+`;
+
 const HeaderSC = styled.div`
 
-button{
-    position: fixed;
-    right: 84px;
-    top: 25px;
-    z-index: 4;
-    background-color: #126BA5;
-    border: 1px solid white;
-    border-radius: 5px;
-    color: white;
-    width: 60px;
-    height: 25px;
-    cursor: pointer;
-    transition: all 200ms;
-    &:hover{
-        color: #126BA5;
-        border: 1px solid #126BA5;
-        background-color: white;
-    }
-}
+
 `;
 
 const HeaderApp = styled.div`
