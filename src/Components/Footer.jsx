@@ -2,13 +2,34 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { GetTodayHabits } from '../requests';
 
 import UserContext from '../contexts/UserContext';
 
 export default function Footer() {
-    const { completedHabits } = useContext(UserContext);
+    
     const navigate = useNavigate();
+
+    // ISSO É FIRULA 
+    const {setUser, completedHabits ,setCompletedHabits } = useContext(UserContext);
+    useEffect( ()=>{
+        updateProgressbar();
+    },[]);
+
+    function updateProgressbar()
+    {
+        if (localStorage.getItem('user-trackit')) {
+            const lsUser = JSON.parse(localStorage.getItem('user-trackit'));
+            setUser(lsUser);
+            GetTodayHabits({ headers: { Authorization: `Bearer ${lsUser.token}` } }, updateHabits);
+        }
+    }
+
+    function updateHabits(habistArr, error) {
+        setCompletedHabits((habistArr.filter((habit) => habit.done).length / habistArr.length) * 100);
+    }
+    // FIM DA FIRULA
 
     return (
         <MenuContainer data-test="menu">
