@@ -3,6 +3,9 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoExitOutline } from "react-icons/io5";
+import {RiArrowDropDownLine} from "react-icons/ri";
+import {RiArrowDropUpLine} from "react-icons/ri";
+
 
 
 
@@ -24,10 +27,12 @@ export default function Header() {
     }
 
     return (
-        <HeaderSC data-test="header" >
+        <div data-test="header" >
             <HeaderApp>
                 <span onClick={() => navigate('/hoje')}>TrackIt</span>
                 <img onClick={() => setShowDropdown(!showDropdown)} src={user.image} alt="profile" data-test="avatar" />
+                {showDropdown ? <RiArrowDropUpLine className="mini-btn-avatar"/> : <RiArrowDropDownLine className="mini-btn-avatar"/>}
+                {showDropdown && <div onClick={() => setShowDropdown(false)} className="modal-div"></div>}
             </HeaderApp>
             <Dropdown className={showDropdown ? 'open' : ''}>
                 <p className="dp-user-name" >{user.name}</p>
@@ -36,7 +41,7 @@ export default function Header() {
                     Sair
                 </button>
             </Dropdown>
-        </HeaderSC>
+        </div>
     );
 }
 
@@ -98,11 +103,6 @@ const Dropdown = styled.div`
     }
 `;
 
-const HeaderSC = styled.div`
-
-
-`;
-
 const HeaderApp = styled.div`
     background: #126BA5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -116,14 +116,42 @@ const HeaderApp = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0 18px;
+
+    .modal-div{
+        min-width: 100svw;
+        min-height: 100svh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: black;
+        opacity: 50%;
+    }
     
+    .mini-btn-avatar{
+        color:  #126BA5;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        position: fixed;
+        right: 18px;
+        top: 45px;
+        z-index: 5;
+        pointer-events: none;
+    }
+
     img {
         width: 51px;
         height: 51px;
         background-position: 50% 50%;
         background-size: cover;
         border-radius: 50%;
+        z-index: 5;
         cursor: pointer;
+        transition: all 200ms;
+        &:hover
+        {
+            opacity: 70%;
+        }
     }
 
     span {
