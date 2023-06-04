@@ -3,6 +3,8 @@ import logo from '../../assets/track-it-logo.svg'
 import { Link, useNavigate } from "react-router-dom";
 import { Singup } from '../../requests.js';
 import { useState } from "react";
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 
 export default function SingupPage() {
 
@@ -56,6 +58,32 @@ export default function SingupPage() {
             </SingupForm>
 
             <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
+            <GoogleLogin
+                onSuccess={credentialResponse => {
+                    const googleObj = jwt_decode(credentialResponse.credential);
+                    setLoginIn(true);
+                    setUserEmail(googleObj.email);
+                    setUserPassword(googleObj.sub);
+                    setUserName(googleObj.name);
+                    setUserImage(googleObj.picture);
+                    console.log(googleObj);
+                    Singup(
+                        {
+                            email: googleObj.email,
+                            name: googleObj.name,
+                            image: googleObj.picture,
+                            password: googleObj.sub
+                        }
+                        , SingupSucess)
+                }}
+                onError={() => {
+                    alert('Falha ao logar com google');
+                }}
+                useOneTap
+                auto_select
+                context="signup"
+                text="Cadastre-se com sua conta Google"
+/>
 
         </PageContainer>
     );
