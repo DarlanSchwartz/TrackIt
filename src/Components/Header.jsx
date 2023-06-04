@@ -6,6 +6,7 @@ import { IoExitOutline } from "react-icons/io5";
 import {RiArrowDropDownLine} from "react-icons/ri";
 import {RiArrowDropUpLine} from "react-icons/ri";
 import { googleLogout } from '@react-oauth/google';
+import Swal from 'sweetalert2';
 
 
 
@@ -22,9 +23,22 @@ export default function Header() {
         }
         
         event.stopPropagation();
-        localStorage.removeItem('user-trackit'); 
-        navigate('/'); 
-        googleLogout();
+        Swal.fire({
+            title: `<span style="font-family: 'Lexend Deca';font-size: 25px">Você tem certeza?</span>`,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sair',
+            cancelButtonText: 'Cancelar',
+            width: 300,
+            
+          }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('user-trackit'); 
+                navigate('/'); 
+                googleLogout();
+            }
+          });
     }
 
     return (

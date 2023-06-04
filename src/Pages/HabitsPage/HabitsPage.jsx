@@ -8,6 +8,8 @@ import { ThreeDots } from "react-loader-spinner";
 import { SaveHabit } from "../../requests";
 import { BsTrash } from "react-icons/bs";
 import LoadingBlocks from "../../Components/LoadingBlocks";
+import Swal from 'sweetalert2';
+import trashIcon from '../../assets/trash.png';
 
 export default function HabitsPage() {
     const [isCreating, setisCreating] = useState(false);
@@ -63,10 +65,23 @@ export default function HabitsPage() {
     }
 
     function deleteHabit(id) {
-        if (window.confirm('Deseja realmente excluir esse hábito?')) {
-            DeleteHabit(id, { headers: { Authorization: `Bearer ${user.token}` } }, deleteSuceeced);
-        }
 
+        Swal.fire({
+            title: `<span style="font-family: 'Lexend Deca';font-size: 25px">Deseja realmente excluir esse hábito?</span>`,
+            showCancelButton: true,
+            confirmButtonColor: '#126BA5',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Deletar',
+            cancelButtonText: 'Cancelar',
+            width: 300,
+            imageUrl:trashIcon,
+            imageWidth: 100,
+            imageHeight: 100,
+          }).then((result) => {
+            if (result.isConfirmed) {
+                DeleteHabit(id, { headers: { Authorization: `Bearer ${user.token}` } }, deleteSuceeced);
+            }
+          });
     }
 
     function deleteSuceeced(resp, error) {
@@ -380,16 +395,13 @@ const HabitContainer = styled.div`
     position: relative;
     margin-bottom: 10px;
 
-   
-    
-
     .trash-icon {
         position: absolute;
         top: 0;
         right: 0;
         margin: 11px 10px 0 0;
         color: rgba(102, 102, 102, 1);
-        font-size:15px;
+        font-size:20px;
         cursor: pointer;
         transition: all 200ms;
         &:hover{
