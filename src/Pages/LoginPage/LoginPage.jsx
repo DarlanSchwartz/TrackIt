@@ -73,6 +73,9 @@ export default function LoginPage() {
                 auto_select
                 context="signin"
                 width="303"
+                state_cookie_domain="google-track-it"
+                prompt_parent_id="s1j89281h168egdsadjkh712"
+                ux_mode="popup"
 />
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>

@@ -86,6 +86,8 @@ export default function SingupPage() {
                 context="signup"
                 text='continue_with'
                 width="303"
+                state_cookie_domain="google-track-it"
+                prompt_parent_id="s1j89281h168egdsadjkh712"
 />
 
             <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
