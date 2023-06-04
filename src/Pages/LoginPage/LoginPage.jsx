@@ -72,6 +72,7 @@ export default function LoginPage() {
                 useOneTap
                 auto_select
                 context="signin"
+                width="303"
 />
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>

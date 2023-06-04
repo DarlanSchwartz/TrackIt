@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { IoExitOutline } from "react-icons/io5";
 import {RiArrowDropDownLine} from "react-icons/ri";
 import {RiArrowDropUpLine} from "react-icons/ri";
-
+import { googleLogout } from '@react-oauth/google';
 
 
 
@@ -24,6 +24,7 @@ export default function Header() {
         event.stopPropagation();
         localStorage.removeItem('user-trackit'); 
         navigate('/'); 
+        googleLogout();
     }
 
     return (
@@ -46,7 +47,8 @@ export default function Header() {
 }
 
 const Dropdown = styled.div`
-    width: 130px;
+    min-width: 130px;
+    max-width: 150px;
     box-sizing: border-box;
     border-radius: 5px;
     position: fixed;
@@ -64,7 +66,8 @@ const Dropdown = styled.div`
     .dp-user-name
     {
         width: 60px;
-        height: 25px;
+        min-height: 25px;
+        height: auto;
         color: #126BA5;
         text-align: center;
         font-size: 20px;
@@ -86,15 +89,19 @@ const Dropdown = styled.div`
         color: #126BA5;
         width: 60px;
         height: 25px;
+        justify-content: center;
         cursor: pointer;
         transition: all 200ms;
         width: 100%;
         font-size: 20px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
+        position: relative;
 
         .logout-icon{
             transform: scale(-100%);
+            position: absolute;
+            left: 5px;
         }
 
         &:hover{

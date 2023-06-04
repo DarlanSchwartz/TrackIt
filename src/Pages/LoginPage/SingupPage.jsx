@@ -21,7 +21,11 @@ export default function SingupPage() {
 
         if (error == true) {
             if (response.response.status == 422) {
-                alert('Informações de login incorretas');
+                alert('Informações de cadastro incorretas');
+            }
+            else if (response.response.status == 409)
+            {
+                alert('Esta conta ja está cadastrada!');
             }
 
             return;
@@ -57,7 +61,6 @@ export default function SingupPage() {
 
             </SingupForm>
 
-            <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
             <GoogleLogin
                 onSuccess={credentialResponse => {
                     const googleObj = jwt_decode(credentialResponse.credential);
@@ -81,8 +84,12 @@ export default function SingupPage() {
                 useOneTap
                 auto_select
                 context="signup"
-                text='signup_with'
+                text='continue_with'
+                width="303"
 />
+
+            <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
+            
 
         </PageContainer>
     );
@@ -110,7 +117,7 @@ const PageContainer = styled.div`
         text-align: center;
         text-decoration-line: underline;
         color: #52B6FF;
-        margin-bottom: 10px;
+        margin-top: 10px;
     }
 `;
 
@@ -120,6 +127,7 @@ const SingupForm = styled.form`
     flex-direction: column;
     gap: 6px;
     margin-top: 35px;
+    margin-bottom: 10px;
 
     button
     {
