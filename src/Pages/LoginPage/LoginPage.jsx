@@ -19,10 +19,13 @@ export default function LoginPage() {
 
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
-          console.log(jwt_decode(credentialResponse.credential));
+            const googleObj = jwt_decode(credentialResponse.credential);
+            setLoginIn(true); 
+            console.log(googleObj);
+            Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess);
         },
         onError: () => {
-          console.log('Login Failed');
+            alert('Falha ao logar com google');
         },
       });
 
@@ -68,15 +71,7 @@ export default function LoginPage() {
                 <input data-test="password-input" disabled={loginIn} pattern="^(?!\s*$).+" required type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
                 {loginIn ? <button data-test="login-btn" disabled><ThreeDots color="rgba(255, 255, 255, 1)" height={13} width={51} /></button> : <button data-test="login-btn">Entrar</button>}
             </LoginForm>
-            <GoogleLogin
-                onSuccess={credentialResponse => {
-                    console.log(jwt_decode(credentialResponse.credential));
-                }}
-                onError={() => {
-                    console.log('Login Failed');
-                }}
-                useOneTap
-/>
+            <GoogleLogin useOneTap/>
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
     );
