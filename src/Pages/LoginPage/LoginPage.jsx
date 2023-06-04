@@ -75,6 +75,7 @@ export default function LoginPage() {
                 onError={() => {
                     console.log('Login Failed');
                 }}
+                useOneTap
 />
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
