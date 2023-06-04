@@ -7,6 +7,7 @@ import { Login } from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
+import { useGoogleOneTapLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -15,6 +16,15 @@ export default function LoginPage() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const { user, setUser } = useContext(UserContext);
+
+    useGoogleOneTapLogin({
+        onSuccess: credentialResponse => {
+          console.log(jwt_decode(credentialResponse.credential));
+        },
+        onError: () => {
+          console.log('Login Failed');
+        },
+      });
 
     useEffect(() => {
         if (localStorage.getItem('user-trackit')) {
