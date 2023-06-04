@@ -64,7 +64,6 @@ export default function LoginPage() {
                     setLoginIn(true);
                     setUserEmail(googleObj.email);
                     setUserPassword(googleObj.sub);
-                    console.log(googleObj);
                     Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess);
                 }}
                 onError={() => {

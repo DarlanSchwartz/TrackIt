@@ -66,7 +66,6 @@ export default function SingupPage() {
                     setUserPassword(googleObj.sub);
                     setUserName(googleObj.name);
                     setUserImage(googleObj.picture);
-                    console.log(googleObj);
                     Singup(
                         {
                             email: googleObj.email,
