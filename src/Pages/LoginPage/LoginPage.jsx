@@ -129,6 +129,7 @@ const LoginForm = styled.form`
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 20px;
 
         &:disabled{
             opacity: 0.7;

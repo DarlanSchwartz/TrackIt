@@ -81,7 +81,7 @@ export default function SingupPage() {
                 useOneTap
                 auto_select
                 context="signup"
-                text="Cadastre-se com sua conta Google"
+                text='signup_with'
 />
 
         </PageContainer>
@@ -110,6 +110,7 @@ const PageContainer = styled.div`
         text-align: center;
         text-decoration-line: underline;
         color: #52B6FF;
+        margin-bottom: 10px;
     }
 `;
 
@@ -142,6 +143,7 @@ const SingupForm = styled.form`
         border: none;
         cursor: pointer;
         transition: all 200ms;
+        
 
         &:hover{
             color: #52B6FF;
