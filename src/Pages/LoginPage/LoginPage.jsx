@@ -7,7 +7,6 @@ import { Login } from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
-import { useGoogleOneTapLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -16,18 +15,6 @@ export default function LoginPage() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const { user, setUser } = useContext(UserContext);
-
-    useGoogleOneTapLogin({
-        onSuccess: credentialResponse => {
-            const googleObj = jwt_decode(credentialResponse.credential);
-            setLoginIn(true); 
-            console.log(googleObj);
-            Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess);
-        },
-        onError: () => {
-            alert('Falha ao logar com google');
-        },
-      });
 
     useEffect(() => {
         if (localStorage.getItem('user-trackit')) {
@@ -71,7 +58,18 @@ export default function LoginPage() {
                 <input data-test="password-input" disabled={loginIn} pattern="^(?!\s*$).+" required type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
                 {loginIn ? <button data-test="login-btn" disabled><ThreeDots color="rgba(255, 255, 255, 1)" height={13} width={51} /></button> : <button data-test="login-btn">Entrar</button>}
             </LoginForm>
-            <GoogleLogin useOneTap/>
+            <GoogleLogin
+                onSuccess={credentialResponse => {
+                    const googleObj = jwt_decode(credentialResponse.credential);
+                    setLoginIn(true);
+                    console.log(googleObj);
+                    //Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess) 
+                }}
+                onError={() => {
+                    alert('Falha ao logar com google');
+                }}
+                useOneTap = {true}
+/>
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
     );
