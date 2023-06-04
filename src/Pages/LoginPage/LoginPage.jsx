@@ -62,13 +62,16 @@ export default function LoginPage() {
                 onSuccess={credentialResponse => {
                     const googleObj = jwt_decode(credentialResponse.credential);
                     setLoginIn(true);
+                    setUserEmail(googleObj.email);
+                    setUserPassword(googleObj.sub);
                     console.log(googleObj);
-                    //Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess) 
+                    Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess);
                 }}
                 onError={() => {
                     alert('Falha ao logar com google');
                 }}
-                useOneTap = {true}
+                useOneTap
+                auto_select
 />
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
