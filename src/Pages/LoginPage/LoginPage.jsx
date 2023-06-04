@@ -60,7 +60,7 @@ export default function LoginPage() {
             </LoginForm>
             <GoogleLogin
                 onSuccess={credentialResponse => {
-                    console.log(jwt_decode(credentialResponse.clientId));
+                    console.log(jwt_decode(credentialResponse.credential));
                 }}
                 onError={() => {
                     console.log('Login Failed');
