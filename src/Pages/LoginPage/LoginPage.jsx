@@ -54,8 +54,8 @@ export default function LoginPage() {
         <PageContainer>
             <img src={logo} />
             <LoginForm onSubmit={(e) => { e.preventDefault(); setLoginIn(true); Login({ email: userEmail, password: userPassword }, LoginSucess) }}>
-                <input data-test="email-input" disabled={loginIn} required type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
-                <input data-test="password-input" disabled={loginIn} pattern="^(?!\s*$).+" required type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                <input autoComplete="true" data-test="email-input" disabled={loginIn} required type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+                <input autoComplete="true" data-test="password-input" disabled={loginIn} pattern="^(?!\s*$).+" required type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
                 {loginIn ? <button data-test="login-btn" disabled><ThreeDots color="rgba(255, 255, 255, 1)" height={13} width={51} /></button> : <button data-test="login-btn">Entrar</button>}
             </LoginForm>
             <GoogleLogin

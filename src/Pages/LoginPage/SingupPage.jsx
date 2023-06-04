@@ -53,11 +53,11 @@ export default function SingupPage() {
                         , SingupSucess)
                 }}>
 
-                <input data-test="email-input" disabled={loginIn} required type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
-                <input data-test="password-input" disabled={loginIn} required pattern="^(?!\s*$).+" type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
-                <input data-test="user-name-input" disabled={loginIn} required pattern="^(?!\s*$).+" type="text" placeholder="nome" name="nome" id="nome" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                <input data-test="user-image-input" disabled={loginIn} required pattern="^(https?:\/\/)?(www\.)?([^/\n]+\/)*[^/\n]+\.(jpg|jpeg|png|gif|bmp|webp)$" type="url" placeholder="foto" name="foto" id="foto" value={userImage} onChange={(e) => setUserImage(e.target.value)} />
-                <button data-test="signup-btn" disabled={loginIn}>{loginIn ? '...' : 'Cadastrar'}</button>
+                <input data-test="email-input" autoComplete="true" disabled={loginIn} required type="email" placeholder="email" name="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+                <input data-test="password-input" autoComplete="true" disabled={loginIn} required pattern="^(?!\s*$).+" type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                <input data-test="user-name-input" autoComplete="true" disabled={loginIn} required pattern="^(?!\s*$).+" type="text" placeholder="nome" name="nome" id="nome" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                <input data-test="user-image-input" autoComplete="true" disabled={loginIn} required pattern="^(https?:\/\/)?(www\.)?([^/\n]+\/)*[^/\n]+\.(jpg|jpeg|png|gif|bmp|webp)$" type="url" placeholder="foto ex: minhafoto.jpg" name="foto" id="foto" value={userImage} onChange={(e) => setUserImage(e.target.value)} />
+                <button data-test="signup-btn" autoComplete="true" disabled={loginIn}>{loginIn ? '...' : 'Cadastrar'}</button>
 
             </SingupForm>
 
@@ -88,6 +88,7 @@ export default function SingupPage() {
                 width="303"
                 state_cookie_domain="google-track-it"
                 prompt_parent_id="s1j89281h168egdsadjkh712"
+                ux_mode="popup"
 />
 
             <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
