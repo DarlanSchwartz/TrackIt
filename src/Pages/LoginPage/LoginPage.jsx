@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { Login } from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
 import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -58,12 +59,12 @@ export default function LoginPage() {
                 {loginIn ? <button data-test="login-btn" disabled><ThreeDots color="rgba(255, 255, 255, 1)" height={13} width={51} /></button> : <button data-test="login-btn">Entrar</button>}
             </LoginForm>
             <GoogleLogin
-  onSuccess={credentialResponse => {
-    console.log(credentialResponse);
-  }}
-  onError={() => {
-    console.log('Login Failed');
-  }}
+                onSuccess={credentialResponse => {
+                    console.log(jwt_decode(credentialResponse.clientId));
+                }}
+                onError={() => {
+                    console.log('Login Failed');
+                }}
 />
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
