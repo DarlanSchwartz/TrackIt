@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Login } from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -56,6 +57,14 @@ export default function LoginPage() {
                 <input data-test="password-input" disabled={loginIn} pattern="^(?!\s*$).+" required type="password" placeholder="senha" name="senha" id="senha" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
                 {loginIn ? <button data-test="login-btn" disabled><ThreeDots color="rgba(255, 255, 255, 1)" height={13} width={51} /></button> : <button data-test="login-btn">Entrar</button>}
             </LoginForm>
+            <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>
             <Link data-test="signup-link" to={'/cadastro'}>Não tem uma conta? Cadastre-se!</Link>
         </PageContainer>
     );
