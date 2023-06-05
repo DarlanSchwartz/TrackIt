@@ -31,14 +31,14 @@ export default function App() {
             <Route path="*" element={<ErrorPage generic ='true'/>}/>
             <Route path="/error" element={<ErrorPage generic ='false'/>}/>
         </Routes>
-        {/* <CookieConsent 
-          buttonStyle={{textAlign:'center',backgroundColor:'#52B6FF',borderRadius:5,color:'white',}} 
-          style={{textAlign:'center',backgroundColor:'#126BA5',flexWrap:'nowrap',alignItems:'center'}} 
+        <CookieConsent 
+          buttonStyle={{textAlign:'center',backgroundColor:'#52B6FF',borderRadius:5,color:'white',width:'50px',position:'fixed',right:'20px',bottom:'-2px'}} 
+          style={{textAlign:'center',backgroundColor:'#126BA5',flexWrap:'nowrap',alignItems:'center',maxWidth:'100%',height:50}} 
           buttonId='sadkasdkjh12123jkhdsakj'
-          buttonText = "Eu concordo"
+          buttonText = "Ok"
         >
-          <span style={{fontFamily: 'Lexend Deca', fontSize: 15}}>Esse site usa cookies!</span>
-        </CookieConsent> */}
+          <span style={{fontFamily: 'Lexend Deca', fontSize: 15,width:'auto',maxWidth:'200px',position:'fixed',left:'50%',bottom:'18px',transform:'translateX(-55%)'}}>Esse site usa cookies!</span>
+        </CookieConsent>
     </UserContext.Provider>
   )
 }

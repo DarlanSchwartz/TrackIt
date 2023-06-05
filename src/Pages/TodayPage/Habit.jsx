@@ -7,7 +7,6 @@ export default function Habit({ habit, handleClick,loading }) {
     const { name, currentSequence, highestSequence, done } = habit;
     const [changing,setChanging] = useState(false);
 
-
     function click()
     {
         if(changing || loading == 'true')
@@ -27,8 +26,6 @@ export default function Habit({ habit, handleClick,loading }) {
         }
 
     },[loading])
-
-
 
     return (
         <TodayHabitContainer data-test="today-habit-container" done={done} currentSequence={currentSequence} highestSequence={highestSequence} >
