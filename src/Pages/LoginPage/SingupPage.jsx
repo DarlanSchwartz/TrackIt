@@ -89,6 +89,7 @@ export default function SingupPage() {
                 state_cookie_domain="google-track-it"
                 prompt_parent_id="s1j89281h168egdsadjkh712"
                 ux_mode="popup"
+                theme="filled_blue"
 />
 
             <Link data-test="login-link" to='/' >Já tem uma conta? Faça login!</Link>
