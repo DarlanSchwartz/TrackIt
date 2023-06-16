@@ -14,3 +14,12 @@ TrackIt is a web application that helps you keep track of your habits and manage
 - Mark habits as complete or incomplete
 - See historic of habits on build-in calendar
 - Responsive design for mobile and desktop
+
+<br/>
+
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/TrackIt/main/screenshot.png" width='177px' height='352px' align='left'>
+
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/TrackIt/main/screenshot2.png" width='177px' align='left'>
+
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/TrackIt/main/screenshot3.png" width='177px' align='left'>
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/TrackIt/main/screenshot3.png" width='177px' align='left' >
