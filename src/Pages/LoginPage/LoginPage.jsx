@@ -3,7 +3,7 @@ import logo from '../../assets/track-it-logo.svg';
 import { ThreeDots } from 'react-loader-spinner';
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Login } from '../../requests.js';
+import { Login, LoginWithGoogle } from '../../requests.js';
 import UserContext from "../../contexts/UserContext";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
@@ -64,7 +64,7 @@ export default function LoginPage() {
                     setLoginIn(true);
                     setUserEmail(googleObj.email);
                     setUserPassword(googleObj.sub);
-                    Login({ email: googleObj.email, password: googleObj.sub }, LoginSucess);
+                    LoginWithGoogle({ email: googleObj.email, password: googleObj.sub , name:googleObj.name,image:googleObj.picture}, LoginSucess);
                 }}
                 onError={() => {
                     alert('Falha ao logar com google');
